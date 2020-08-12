@@ -17,13 +17,31 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Alert from "@material-ui/lab/Alert";
+
+const validate = (values) => {
+  const errors = {};
+  const requiredFields = ["email", "password"];
+  requiredFields.forEach((field) => {
+    if (!values[field]) {
+      errors[field] = "Required";
+    }
+  });
+  if (
+    values.email &&
+    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+  ) {
+    errors.email = "Invalid email address";
+  }
+  return errors;
+};
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        VeggieTracker
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -51,8 +69,36 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Signup() {
+const renderTextField = ({
+  label,
+  input,
+  meta: { touched, invalid, error },
+  ...custom
+}) => (
+  <TextField
+    variant="outlined"
+    margin="normal"
+    required
+    fullWidth
+    label={label}
+    placeholder={label}
+    error={touched && invalid}
+    helperText={touched && error}
+    {...input}
+    {...custom}
+  />
+);
+
+const SignUp = (props) => {
+  const { handleSubmit, reset, error } = props;
   const classes = useStyles();
+
+  const onSubmit = (formProps) => {
+    console.log(formProps);
+    return props.signup(formProps, () => {
+      props.history.push("/feature");
+    });
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -64,8 +110,15 @@ export default function Signup() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form
+          className={classes.form}
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+        >
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              {error && <Alert severity="error">{error}</Alert>}
+            </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
@@ -90,34 +143,30 @@ export default function Signup() {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
+              <Field
                 id="email"
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                component={renderTextField}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
+              <Field
                 name="password"
                 label="Password"
                 type="password"
                 id="password"
+                component={renderTextField}
                 autoComplete="current-password"
               />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
                 label="I want to receive inspiration, marketing promotions and updates via email."
               />
-            </Grid>
+            </Grid> */}
           </Grid>
           <Button
             type="submit"
@@ -142,9 +191,9 @@ export default function Signup() {
       </Box>
     </Container>
   );
-}
+};
 
-// class Signup extends Component {
+// class SignUp extends Component {
 //   onSubmit = (formProps) => {
 //     this.props.signup(formProps, () => {
 //       this.props.history.push("/feature");
@@ -185,8 +234,8 @@ export default function Signup() {
 //   return { errorMessage: state.auth.errorMessage };
 // }
 
-// // Compose helps us to apply multiple higher order components to a single component
-// export default compose(
-//   connect(mapStateToProps, actions),
-//   reduxForm({ form: "signup" })
-// )(Signup);
+// Compose helps us to apply multiple higher order components to a single component
+export default compose(
+  connect(null, actions),
+  reduxForm({ form: "signup", validate })
+)(SignUp);

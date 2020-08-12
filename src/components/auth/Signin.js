@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.light,
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -160,12 +160,19 @@ const SignIn = (props) => {
             >
               Sign In
             </Button>
-            <Grid container>
+            {/* <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
+              <Grid item>
+                <Link href="#" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid> */}
+            <Grid container justify="flex-end">
               <Grid item>
                 <Link href="#" variant="body2">
                   {"Don't have an account? Sign Up"}
@@ -182,12 +189,12 @@ const SignIn = (props) => {
   );
 };
 
-function mapStateToProps(state) {
-  return { errorMessage: state.auth.errorMessage };
-}
+// function mapStateToProps(state) {
+//   return { errorMessage: state.auth.errorMessage };
+// }
 
 // Compose helps us to apply multiple higher order components to a single component
 export default compose(
-  connect(mapStateToProps, actions),
+  connect(null, actions),
   reduxForm({ form: "signin", validate })
 )(SignIn);
