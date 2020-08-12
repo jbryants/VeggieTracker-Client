@@ -201,7 +201,10 @@ export default function Dashboard() {
             >
               <MenuItem onClick={handleClose}>My profile</MenuItem>
               <MenuItem>
-                <ReactRouterLink to="/signout">
+                <ReactRouterLink
+                  to="/signout"
+                  style={{ textDecoration: "none" }}
+                >
                   <Link color="textPrimary" underline="none">
                     Sign Out
                   </Link>

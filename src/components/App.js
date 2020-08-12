@@ -5,7 +5,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 export default ({ children }) => {
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: light)");
 
   const theme = React.useMemo(
     () =>
@@ -34,7 +34,7 @@ export default ({ children }) => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div>
-        <Header />
+        {/* <Header /> */}
         {children}
       </div>
     </ThemeProvider>

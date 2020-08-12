@@ -25,8 +25,11 @@ export const signup = (formProps, callback) => async (dispatch) => {
   }
 };
 
-export const signout = () => {
+export const signout = (history) => {
   localStorage.removeItem("token");
+
+  // this is not the right way to handle it, remove the signout component
+  history.push("/signin");
 
   return {
     type: AUTH_USER,

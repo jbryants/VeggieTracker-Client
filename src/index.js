@@ -26,12 +26,12 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <App>
-        <Route path="/" exact component={Welcome} />
+        {/* <Route path="/" exact component={Welcome} /> */}
         <Route path="/signup" component={SignUp} />
         <Route path="/feature" component={Feature} />
         <Route path="/signout" component={SignOut} />
         <Route path="/signin" component={SignIn} />
-        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/" component={Dashboard} />
       </App>
     </BrowserRouter>
   </Provider>,

@@ -32,59 +32,35 @@ export default function Orders() {
             </Typography>
           </Grid>
           <Grid item>
-            <Button
-              variant="contained"
-              color="secondary"
-              size="small"
-              className={classes.button}
-              startIcon={<DeleteIcon />}
-            >
-              Delete
-            </Button>
+            <Typography variant="subtitle1">Number of items: 10</Typography>
           </Grid>
           <Grid item>
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              className={classes.button}
-              endIcon={<EditIcon />}
-            >
-              Edit
-            </Button>
+            <Typography variant="subtitle1">Total cost: ₹19.00</Typography>
           </Grid>
         </Grid>
         <Grid item>
-          <Typography variant="subtitle1">Total cost: ₹19.00</Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            className={classes.button}
+            endIcon={<EditIcon />}
+          >
+            Edit
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="small"
+            className={classes.button}
+            startIcon={<DeleteIcon />}
+          >
+            Delete
+          </Button>
         </Grid>
       </Grid>
-      {/* <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{row.amount}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div className={classes.seeMore}>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          See more orders
-        </Link>
-      </div> */}
     </React.Fragment>
   );
 }
