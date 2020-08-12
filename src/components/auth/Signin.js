@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { reduxForm, Field } from "redux-form";
 import { compose } from "redux";
 import { connect } from "react-redux";
@@ -17,6 +17,24 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import Alert from "@material-ui/lab/Alert";
+
+const validate = (values) => {
+  const errors = {};
+  const requiredFields = ["email", "password"];
+  requiredFields.forEach((field) => {
+    if (!values[field]) {
+      errors[field] = "Required";
+    }
+  });
+  if (
+    values.email &&
+    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+  ) {
+    errors.email = "Invalid email address";
+  }
+  return errors;
+};
 
 function Copyright() {
   return (
@@ -53,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.light,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -71,6 +89,10 @@ const renderTextField = ({
   ...custom
 }) => (
   <TextField
+    variant="outlined"
+    margin="normal"
+    required
+    fullWidth
     label={label}
     placeholder={label}
     error={touched && invalid}
@@ -80,17 +102,16 @@ const renderTextField = ({
   />
 );
 
-const Signin = (props) => {
+const SignIn = (props) => {
+  const { handleSubmit, reset, error } = props;
   const classes = useStyles();
 
   const onSubmit = (formProps) => {
     console.log(formProps);
-    props.signin(formProps, () => {
+    return props.signin(formProps, () => {
       props.history.push("/feature");
     });
   };
-
-  const { handleSubmit } = props;
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -109,12 +130,8 @@ const Signin = (props) => {
             onSubmit={handleSubmit(onSubmit)}
             noValidate
           >
-            <div>{props.errorMessage}</div>
+            {error && <Alert severity="error">{error}</Alert>}
             <Field
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
               id="email"
               label="Email Address"
               name="email"
@@ -123,10 +140,6 @@ const Signin = (props) => {
               component={renderTextField}
             />
             <Field
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
               name="password"
               label="Password"
               type="password"
@@ -169,43 +182,6 @@ const Signin = (props) => {
   );
 };
 
-// class Signin extends Component {
-//   onSubmit = (formProps) => {
-//     this.props.signin(formProps, () => {
-//       this.props.history.push("/feature");
-//     });
-//   };
-
-//   render() {
-//     const { handleSubmit } = this.props;
-
-//     return (
-//       <form onSubmit={handleSubmit(this.onSubmit)}>
-//         <fieldset>
-//           <label>Email</label>
-//           <Field
-//             name="email"
-//             type="text"
-//             component="input"
-//             autoComplete="none"
-//           />
-//         </fieldset>
-//         <fieldset>
-//           <label>Password</label>
-//           <Field
-//             name="password"
-//             type="password"
-//             component="input"
-//             autoComplete="none"
-//           />
-//         </fieldset>
-//         <div>{this.props.errorMessage}</div>
-//         <button>Sign in</button>
-//       </form>
-//     );
-//   }
-// }
-
 function mapStateToProps(state) {
   return { errorMessage: state.auth.errorMessage };
 }
@@ -213,5 +189,5 @@ function mapStateToProps(state) {
 // Compose helps us to apply multiple higher order components to a single component
 export default compose(
   connect(mapStateToProps, actions),
-  reduxForm({ form: "signin" })
-)(Signin);
+  reduxForm({ form: "signin", validate })
+)(SignIn);
