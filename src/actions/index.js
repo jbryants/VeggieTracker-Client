@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AUTH_USER } from "./types";
+import { AUTH_USER, OPEN_DRAWER, CLOSE_DRAWER } from "./types";
 import history from "../services/history";
 import { SubmissionError } from "redux-form";
 
@@ -57,4 +57,16 @@ export const signin = (formProps) => async (dispatch) => {
       _error: "Invalid login credentials",
     });
   }
+};
+
+export const handleDrawer = (open) => {
+  return open === false
+    ? {
+        type: OPEN_DRAWER,
+        payload: true,
+      }
+    : {
+        type: CLOSE_DRAWER,
+        payload: false,
+      };
 };

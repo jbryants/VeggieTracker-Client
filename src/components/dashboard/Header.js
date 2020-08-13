@@ -9,15 +9,11 @@ import Toolbar from "@material-ui/core/Toolbar";
 import { Menu, MenuItem } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import Typography from "@material-ui/core/Typography";
-import Drawer from "@material-ui/core/Drawer";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import Divider from "@material-ui/core/Divider";
-import List from "@material-ui/core/List";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import IconButton from "@material-ui/core/IconButton";
 import Link from "@material-ui/core/Link";
 
-import { mainListItems, secondaryListItems } from "./drawerListItems";
+import LeftSideDrawer from "./LeftSideDrawer";
 
 const drawerWidth = 240;
 
@@ -102,17 +98,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = (props) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(false);
   const menuOpen = Boolean(anchorEl);
 
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
+    props.handleDrawer(props.open);
   };
 
   const handleMenu = (event) => {
@@ -133,7 +125,7 @@ const Header = (props) => {
     <div className={classes.root}>
       <AppBar
         position="absolute"
-        className={clsx(classes.appBar, open && classes.appBarShift)}
+        className={clsx(classes.appBar, props.open && classes.appBarShift)}
       >
         <Toolbar className={classes.toolbar}>
           <IconButton
@@ -143,7 +135,7 @@ const Header = (props) => {
             onClick={handleDrawerOpen}
             className={clsx(
               classes.menuButton,
-              open && classes.menuButtonHidden
+              props.open && classes.menuButtonHidden
             )}
           >
             <MenuIcon />
@@ -198,25 +190,13 @@ const Header = (props) => {
           </div>
         </Toolbar>
       </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <List>{mainListItems}</List>
-        <Divider />
-        <List>{secondaryListItems}</List>
-      </Drawer>
+      <LeftSideDrawer />
     </div>
   );
 };
 
-export default connect(null, actions)(Header);
+const mapStateToProps = (state) => {
+  return { open: state.drawer.open };
+};
+
+export default connect(mapStateToProps, actions)(Header);

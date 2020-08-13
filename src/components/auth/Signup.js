@@ -155,11 +155,14 @@ const SignUp = (props) => {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <ReactRouterLink to="/" style={{ textDecoration: "none" }}>
-                <Link variant="body2" underline="hover">
-                  Already have an account? Sign in
-                </Link>
-              </ReactRouterLink>
+              <Link
+                to="/"
+                variant="body2"
+                underline="hover"
+                component={ReactRouterLink}
+              >
+                Already have an account? Sign in
+              </Link>
             </Grid>
           </Grid>
         </form>
