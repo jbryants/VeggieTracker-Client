@@ -75,14 +75,11 @@ const renderTextField = ({
 );
 
 const SignUp = (props) => {
-  const { handleSubmit, reset, error } = props;
+  const { handleSubmit, error } = props;
   const classes = useStyles();
 
   const onSubmit = (formProps) => {
-    console.log(formProps);
-    return props.signup(formProps, () => {
-      props.history.push("/dashboard");
-    });
+    return props.signup(formProps);
   };
 
   return (
@@ -158,7 +155,7 @@ const SignUp = (props) => {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <ReactRouterLink to="/signin" style={{ textDecoration: "none" }}>
+              <ReactRouterLink to="/" style={{ textDecoration: "none" }}>
                 <Link variant="body2" underline="hover">
                   Already have an account? Sign in
                 </Link>

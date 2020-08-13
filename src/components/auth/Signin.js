@@ -92,9 +92,7 @@ const SignIn = (props) => {
   const classes = useStyles();
 
   const onSubmit = (formProps) => {
-    return props.signin(formProps, () => {
-      props.history.push("/dashboard");
-    });
+    return props.signin(formProps);
   };
 
   return (
