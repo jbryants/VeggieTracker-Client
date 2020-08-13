@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "./Header";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -33,10 +32,7 @@ export default ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <div>
-        {/* <Header /> */}
-        {children}
-      </div>
+      <div>{children}</div>
     </ThemeProvider>
   );
 };

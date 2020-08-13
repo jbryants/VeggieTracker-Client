@@ -1,18 +1,16 @@
-import React, { Component } from "react";
+import React from "react";
 import { reduxForm, Field } from "redux-form";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
+import { Link as ReactRouterLink } from "react-router-dom";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -35,19 +33,6 @@ const validate = (values) => {
   }
   return errors;
 };
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        VeggieTracker
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -96,7 +81,7 @@ const SignUp = (props) => {
   const onSubmit = (formProps) => {
     console.log(formProps);
     return props.signup(formProps, () => {
-      props.history.push("/feature");
+      props.history.push("/dashboard");
     });
   };
 
@@ -161,12 +146,6 @@ const SignUp = (props) => {
                 autoComplete="current-password"
               />
             </Grid>
-            {/* <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid> */}
           </Grid>
           <Button
             type="submit"
@@ -179,60 +158,18 @@ const SignUp = (props) => {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
-                Already have an account? Sign in
-              </Link>
+              <ReactRouterLink to="/signin" style={{ textDecoration: "none" }}>
+                <Link variant="body2" underline="hover">
+                  Already have an account? Sign in
+                </Link>
+              </ReactRouterLink>
             </Grid>
           </Grid>
         </form>
       </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
     </Container>
   );
 };
-
-// class SignUp extends Component {
-//   onSubmit = (formProps) => {
-//     this.props.signup(formProps, () => {
-//       this.props.history.push("/feature");
-//     });
-//   };
-
-//   render() {
-//     const { handleSubmit } = this.props;
-
-//     return (
-//       <form onSubmit={handleSubmit(this.onSubmit)}>
-//         <fieldset>
-//           <label>Email</label>
-//           <Field
-//             name="email"
-//             type="text"
-//             component="input"
-//             autoComplete="none"
-//           />
-//         </fieldset>
-//         <fieldset>
-//           <label>Password</label>
-//           <Field
-//             name="password"
-//             type="password"
-//             component="input"
-//             autoComplete="none"
-//           />
-//         </fieldset>
-//         <div>{this.props.errorMessage}</div>
-//         <button>Sign up</button>
-//       </form>
-//     );
-//   }
-// }
-
-// function mapStateToProps(state) {
-//   return { errorMessage: state.auth.errorMessage };
-// }
 
 // Compose helps us to apply multiple higher order components to a single component
 export default compose(

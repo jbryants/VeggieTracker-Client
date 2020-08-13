@@ -25,11 +25,9 @@ export const signup = (formProps, callback) => async (dispatch) => {
   }
 };
 
-export const signout = (history) => {
+export const signout = (callback) => {
   localStorage.removeItem("token");
-
-  // this is not the right way to handle it, remove the signout component
-  history.push("/signin");
+  callback();
 
   return {
     type: AUTH_USER,
@@ -59,26 +57,3 @@ export const signin = (formProps, callback) => async (dispatch) => {
     });
   }
 };
-
-// export function signin(formProps, callback) {
-//   return (dispatch) => {
-//     return axios
-//       .post("http://localhost:3090/signin", formProps)
-//       .then((response) => {
-//         if (response.data.token !== "") {
-//           dispatch({ type: AUTH_USER, payload: response.data.token });
-//           localStorage.setItem("token", response.data.token);
-//           callback();
-//         } else {
-//           throw new SubmissionError({
-//             _error: "Invalid login credentials",
-//           });
-//         }
-//       })
-//       .catch((error) => {
-//         throw new SubmissionError({
-//           _error: "Invalid login credentials",
-//         });
-//       });
-//   };
-// }

@@ -1,9 +1,12 @@
 import React from "react";
+import { connect } from "react-redux";
+import * as actions from "../../actions";
+import requireAuth from "../requireAuth";
+
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
-import Box from "@material-ui/core/Box";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
@@ -15,7 +18,6 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
-import { Link as ReactRouterLink } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
@@ -24,22 +26,9 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
-import { mainListItems, secondaryListItems } from "./listItems";
-import Orders from "./Orders";
+import { mainListItems, secondaryListItems } from "./drawerListItems";
+import Orders from "./Lists";
 import { MenuItem, Menu } from "@material-ui/core";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const drawerWidth = 240;
 
@@ -122,9 +111,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Dashboard() {
+const Dashboard = (props) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -141,6 +130,12 @@ export default function Dashboard() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleSignOut = () => {
+    props.signout(() => {
+      props.history.push("/signin");
+    });
   };
 
   return (
@@ -201,14 +196,13 @@ export default function Dashboard() {
             >
               <MenuItem onClick={handleClose}>My profile</MenuItem>
               <MenuItem>
-                <ReactRouterLink
-                  to="/signout"
-                  style={{ textDecoration: "none" }}
+                <Link
+                  color="textPrimary"
+                  onClick={handleSignOut}
+                  underline="none"
                 >
-                  <Link color="textPrimary" underline="none">
-                    Sign Out
-                  </Link>
-                </ReactRouterLink>
+                  Sign Out
+                </Link>
               </MenuItem>
             </Menu>
           </div>
@@ -235,74 +229,6 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {/* Chart */}
-            {/* <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                <Chart />
-              </Paper>
-            </Grid> */}
-            {/* Recent Deposits */}
-            {/* <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <Deposits />
-              </Paper>
-            </Grid> */}
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Orders />
@@ -314,11 +240,10 @@ export default function Dashboard() {
               </Paper>
             </Grid>
           </Grid>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
         </Container>
       </main>
     </div>
   );
-}
+};
+
+export default requireAuth(connect(null, actions)(Dashboard));
