@@ -37,11 +37,9 @@ export default () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <div>
-        <Router history={history}>
-          <Routes />
-        </Router>
-      </div>
+      <Router history={history}>
+        <Routes />
+      </Router>
     </ThemeProvider>
   );
 };

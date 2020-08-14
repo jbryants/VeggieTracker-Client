@@ -1,4 +1,4 @@
-import { OPEN_DRAWER, CLOSE_DRAWER } from "../actions/types";
+import { OPEN_DRAWER } from "../actions/types";
 
 const INITIAL_STATE = {
   open: false,
@@ -7,9 +7,7 @@ const INITIAL_STATE = {
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
     case OPEN_DRAWER:
-      return { ...state, open: action.payload };
-    case CLOSE_DRAWER:
-      return { ...state, open: action.payload };
+      return { ...state, open: !state.open };
     default:
       return state;
   }

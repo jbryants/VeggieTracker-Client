@@ -2,7 +2,7 @@ import React from "react";
 import { reduxForm, Field } from "redux-form";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import * as actions from "../../actions";
+import { signin } from "../../actions";
 import { Link as ReactRouterLink } from "react-router-dom";
 
 import Avatar from "@material-ui/core/Avatar";
@@ -39,7 +39,9 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
   },
   image: {
-    backgroundImage: true ? "" : "url(https://source.unsplash.com/random)",
+    backgroundImage: true
+      ? "url(https://images.unsplash.com/photo-1592502712628-c5219bf0bc12)"
+      : "url(https://source.unsplash.com/random)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -57,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.type === "dark" ? "#121212" : "",
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -158,6 +161,6 @@ const SignIn = (props) => {
 
 // Compose helps us to apply multiple higher order components to a single component
 export default compose(
-  connect(null, actions),
+  connect(null, { signin }),
   reduxForm({ form: "signin", validate })
 )(SignIn);
