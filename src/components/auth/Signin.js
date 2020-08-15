@@ -119,7 +119,8 @@ const SignIn = (props) => {
             <Field
               id="email"
               label="Email Address"
-              name="email"
+              //name="email"
+              name="username"
               autoComplete="email"
               component={renderTextField}
             />

@@ -19,7 +19,7 @@ import Alert from "@material-ui/lab/Alert";
 
 const validate = (values) => {
   const errors = {};
-  const requiredFields = ["email", "password"];
+  const requiredFields = ["email", "password1", "password2"];
   requiredFields.forEach((field) => {
     if (!values[field]) {
       errors[field] = "Required";
@@ -31,6 +31,23 @@ const validate = (values) => {
   ) {
     errors.email = "Invalid email address";
   }
+
+  if (values.password1 !== values.password2) {
+    console.log("passwords don't match.");
+    errors.password2 = "Passwords don't match";
+  }
+
+  if (values.password1 && values.password1.length < 8) {
+    console.log("passwords must 8 characters long");
+    errors.password1 = "Password must contain at least 8 characters";
+  }
+
+  if (/^\d+$/i.test(values.password1)) {
+    console.log("passwords cannot have all numbers");
+    errors.password1 =
+      "Password is entirely numeric, please include some characters.";
+  }
+
   return errors;
 };
 
@@ -143,10 +160,20 @@ const SignUp = (props) => {
             </Grid>
             <Grid item xs={12}>
               <Field
-                name="password"
+                name="password1"
                 label="Password"
                 type="password"
-                id="password"
+                id="password1"
+                component={renderTextField}
+                autoComplete="current-password"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Field
+                name="password2"
+                label="Confirm Password"
+                type="password"
+                id="password2"
                 component={renderTextField}
                 autoComplete="current-password"
               />

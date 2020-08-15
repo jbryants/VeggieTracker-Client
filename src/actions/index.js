@@ -1,18 +1,17 @@
-import axios from "axios";
+import django from "../apis/djangoBackend";
 import { AUTH_USER, OPEN_DRAWER } from "./types";
 import history from "../services/history";
 import { SubmissionError } from "redux-form";
 
 export const signup = (formProps) => async (dispatch) => {
   try {
-    const response = await axios.post(
-      "http://localhost:3090/signup",
-      formProps
-    );
+    formProps.username = formProps.email;
+    console.log(formProps);
+    const response = await django.post("/registration/", formProps);
 
-    if (response.data.token !== "") {
-      dispatch({ type: AUTH_USER, payload: response.data.token });
-      localStorage.setItem("token", response.data.token);
+    if (response.status === 201) {
+      dispatch({ type: AUTH_USER, payload: response.data.key });
+      localStorage.setItem("token", response.data.key);
       history.push("/dashboard");
     } else {
       throw new SubmissionError({
@@ -38,14 +37,11 @@ export const signout = () => {
 
 export const signin = (formProps) => async (dispatch) => {
   try {
-    const response = await axios.post(
-      "http://localhost:3090/signin",
-      formProps
-    );
+    const response = await django.post("/login/", formProps);
 
-    if (response.data.token !== "") {
-      dispatch({ type: AUTH_USER, payload: response.data.token });
-      localStorage.setItem("token", response.data.token);
+    if (response.status === 200) {
+      dispatch({ type: AUTH_USER, payload: response.data.key });
+      localStorage.setItem("token", response.data.key);
       history.push("/dashboard");
     } else {
       throw new SubmissionError({
