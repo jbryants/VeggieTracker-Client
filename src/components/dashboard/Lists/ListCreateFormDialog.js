@@ -65,8 +65,8 @@ const ListCreateFormDialog = (props) => {
 
   const handleClose = () => {
     props.handleListCreateFormDialog(false);
-    history.push("/dashboard");
     reset();
+    history.push("/dashboard");
   };
 
   const onSubmit = (formProps) => {
@@ -132,7 +132,7 @@ const ListCreateFormDialog = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { open: state.listReducers.openFormDialog };
+  return { open: state.dialogReducers.openListCreateFormDialog };
 };
 
 // Compose helps us to apply multiple higher order components to a single component

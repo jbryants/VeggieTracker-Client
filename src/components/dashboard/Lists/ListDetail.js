@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import ListDelete from "./ListDelete";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Title from "../Title";
 import { Grid, Typography, Divider, Chip } from "@material-ui/core";
@@ -6,7 +8,6 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ListItemChipList from "../ListItems/ListItemChipList";
 
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Orders() {
+const ListDetail = (props) => {
   const classes = useStyles();
 
   const [expanded, setExpanded] = useState(false);
@@ -83,7 +84,7 @@ export default function Orders() {
                 spacing={2}
               >
                 <Grid item xs>
-                  <Title>Veggies list</Title>
+                  <Title>{props.name}</Title>
                 </Grid>
                 <Grid item xs>
                   <Typography
@@ -91,7 +92,7 @@ export default function Orders() {
                     variant="subtitle1"
                     color="secondary"
                   >
-                    Pachakari karan
+                    {props.shop}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -133,19 +134,25 @@ export default function Orders() {
               </Button>
             </Grid>
             <Grid item>
-              <Button
+              <ListDelete listId={props.id} listName={props.name} />
+              {/* <Button
                 variant="contained"
                 color="secondary"
                 size="small"
                 className={classes.button}
                 startIcon={<DeleteIcon />}
+                onClick={() => {
+                  console.log(props.id + props.name);
+                }}
               >
                 Delete
-              </Button>
+              </Button> */}
             </Grid>
           </Grid>
         </Paper>
       </Grid>
     </React.Fragment>
   );
-}
+};
+
+export default ListDetail;

@@ -1,16 +1,19 @@
-import { OPEN_LIST_CREATE_DIALOG, CREATE_LIST } from "../actions/types";
+import { CREATE_LIST, FETCH_LISTS, DELETE_LIST } from "../actions/types";
+import _ from "lodash";
 
-const INITIAL_STATE = {
-  openFormDialog: false,
-  list: {},
-};
+const INITIAL_STATE = {};
 
 export default function (state = INITIAL_STATE, action) {
   switch (action.type) {
-    case OPEN_LIST_CREATE_DIALOG:
-      return { ...state, openFormDialog: action.payload };
+    case FETCH_LISTS:
+      return { ...state, ..._.mapKeys(action.payload, "id") };
+
     case CREATE_LIST:
-      return { ...state, list: action.payload };
+      return { ...state, [action.payload.id]: action.payload };
+
+    case DELETE_LIST:
+      return _.omit(state, action.payload);
+
     default:
       return state;
   }

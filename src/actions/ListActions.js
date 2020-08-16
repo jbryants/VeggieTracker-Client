@@ -1,18 +1,11 @@
-import { OPEN_LIST_CREATE_DIALOG, CREATE_LIST } from "./types";
+import { CREATE_LIST, FETCH_LISTS, DELETE_LIST } from "./types";
 import django from "../apis/djangoBackend";
 import { SubmissionError } from "redux-form";
-
-export const handleListCreateFormDialog = (open) => {
-  return {
-    type: OPEN_LIST_CREATE_DIALOG,
-    payload: open,
-  };
-};
+import history from "../services/history";
 
 export const createList = (formProps) => async (dispatch) => {
   try {
     const response = await django.post("/lists/", formProps);
-    console.log(response);
     if (response.status === 201) {
       dispatch({ type: CREATE_LIST, payload: response.data });
     } else {
@@ -25,4 +18,21 @@ export const createList = (formProps) => async (dispatch) => {
       _error: "Sorry, there was a problem creating the list.",
     });
   }
+};
+
+export const fetchLists = () => async (dispatch) => {
+  const response = await django.get("/lists/");
+  console.log(response);
+  dispatch({ type: FETCH_LISTS, payload: response.data.results });
+};
+
+export const deleteList = (id) => async (dispatch) => {
+  await django.delete(`/lists/${id}/`);
+
+  dispatch({
+    type: DELETE_LIST,
+    payload: id,
+  });
+
+  history.push("/dashboard");
 };

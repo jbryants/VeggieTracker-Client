@@ -65,7 +65,7 @@ const ListCreateFab = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { open: state.listReducers.openFormDialog };
+  return { open: state.dialogReducers.openListCreateFormDialog };
 };
 
 export default connect(mapStateToProps, { handleListCreateFormDialog })(
