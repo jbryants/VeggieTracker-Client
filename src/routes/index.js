@@ -12,6 +12,7 @@ export default function Routes() {
       <Route path="/" exact component={SignIn} />
       <Route path="/dashboard" exact component={Dashboard} />
       <Route path="/signup" exact component={SignUp} />
+      <Route path="/dashboard/list/new" exact component={Dashboard} />
 
       {/* redirect user to SignIn page if route does not exist and user is not authenticated */}
       <Route component={SignIn} />
