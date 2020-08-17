@@ -34,5 +34,5 @@ export const deleteList = (id) => async (dispatch) => {
     payload: id,
   });
 
-  history.push("/dashboard");
+  // history.push("/dashboard");
 };

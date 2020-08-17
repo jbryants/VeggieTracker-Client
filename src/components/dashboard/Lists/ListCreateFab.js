@@ -10,6 +10,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import ListCreateFormDialog from "./ListCreateFormDialog";
 
+import { ModalLink } from "react-router-modal";
+
 const useStyles = makeStyles((theme) => ({
   fab: {
     position: "absolute",
@@ -39,25 +41,27 @@ const ListCreateFab = (props) => {
 
   const handleClickOpen = () => {
     props.handleListCreateFormDialog(true);
-    history.push("/dashboard/list/new");
+    history.push("/lists/new");
   };
 
   return (
     <div>
       <Grid item xs={3}>
-        <Fab
-          color="primary"
-          className={classes.fab}
-          aria-label="add"
-          variant="extended"
-          onClick={handleClickOpen}
-        >
-          <PostAddRoundedIcon
-            fontSize="large"
-            className={classes.extendedIcon}
-          />
-          NEW LIST
-        </Fab>
+        <ModalLink path={`${match.url}/new`} component={ExampleModalContent}>
+          <Fab
+            color="primary"
+            className={classes.fab}
+            aria-label="add"
+            variant="extended"
+            onClick={handleClickOpen}
+          >
+            <PostAddRoundedIcon
+              fontSize="large"
+              className={classes.extendedIcon}
+            />
+            NEW LIST
+          </Fab>
+        </ModalLink>
       </Grid>
       <ListCreateFormDialog />
     </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { deleteList } from "../../../actions";
 import history from "../../../services/history";
@@ -16,11 +16,12 @@ const ListDelete = (props) => {
 
   const handleClickOpen = () => {
     setOpen(true);
-    history.push(`/dashboard/delete/${props.listId}`);
+    history.push(`/lists/delete/${props.listId}`);
   };
 
   const handleClose = () => {
     setOpen(false);
+    history.push("/lists");
   };
 
   const handleDelete = () => {

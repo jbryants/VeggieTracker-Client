@@ -11,7 +11,7 @@ export const signup = (formProps) => async (dispatch) => {
     if (response.status === 201) {
       dispatch({ type: AUTH_USER, payload: response.data.key });
       localStorage.setItem("token", response.data.key);
-      history.push("/dashboard");
+      history.push("/lists");
     } else {
       throw new SubmissionError({
         _error: "Email in use",
@@ -41,7 +41,7 @@ export const signin = (formProps) => async (dispatch) => {
     if (response.status === 200) {
       dispatch({ type: AUTH_USER, payload: response.data.key });
       localStorage.setItem("token", response.data.key);
-      history.push("/dashboard");
+      history.push("/lists");
     } else {
       throw new SubmissionError({
         _error: "Invalid login credentials",

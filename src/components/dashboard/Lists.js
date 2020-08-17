@@ -20,12 +20,12 @@ const useStyles = makeStyles((theme) => ({
 const Content = () => {
   const classes = useStyles();
   return (
-    <main className={classes.content}>
-      <div className={classes.appBarSpacer} />
-      <Container maxWidth="lg" className={classes.container}>
-        <ListList />
-      </Container>
-    </main>
+    // <main className={classes.content}>
+    //   <div className={classes.appBarSpacer} />
+    // <Container maxWidth="lg" className={classes.container}>
+    <ListList />
+    // </Container>
+    // </main>
   );
 };
 

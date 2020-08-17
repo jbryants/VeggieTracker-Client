@@ -191,7 +191,7 @@ const SignUp = (props) => {
           <Grid container justify="flex-end">
             <Grid item>
               <Link
-                to="/"
+                to="/signin"
                 variant="body2"
                 underline="hover"
                 component={ReactRouterLink}
