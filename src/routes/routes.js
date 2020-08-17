@@ -1,11 +1,5 @@
-import React from "react";
-
 import SignIn from "../components/auth/SignIn";
 import SignUp from "../components/auth/SignUp";
-
-import Tacos from "../components/Tacos";
-import Bus from "../components/Bus";
-import Cart from "../components/Cart";
 import Dashboard from "../components/dashboard/Dashboard";
 import Lists from "../components/dashboard/Lists";
 import ListCreateFab from "../components/dashboard/Lists/ListCreateFab";
@@ -51,7 +45,7 @@ export const routes = [
         routes: [
           {
             path: "/new",
-            component: Lists,
+            component: ListCreateFab,
           },
           {
             path: "/edit/:id",

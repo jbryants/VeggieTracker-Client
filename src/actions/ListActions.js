@@ -1,7 +1,6 @@
-import { CREATE_LIST, FETCH_LISTS, DELETE_LIST } from "./types";
-import django from "../apis/djangoBackend";
 import { SubmissionError } from "redux-form";
-import history from "../services/history";
+import django from "../apis/djangoBackend";
+import { CREATE_LIST, DELETE_LIST, FETCH_LISTS } from "./types";
 
 export const createList = (formProps) => async (dispatch) => {
   try {

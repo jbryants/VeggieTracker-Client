@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { handleListCreateFormDialog } from "../../../actions";
 import history from "../../../services/history";
@@ -9,8 +9,6 @@ import PostAddRoundedIcon from "@material-ui/icons/PostAddRounded";
 import { makeStyles } from "@material-ui/core/styles";
 
 import ListCreateFormDialog from "./ListCreateFormDialog";
-
-import { ModalLink } from "react-router-modal";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -39,6 +37,12 @@ const useStyles = makeStyles((theme) => ({
 const ListCreateFab = (props) => {
   const classes = useStyles();
 
+  useEffect(() => {
+    if (window.location.pathname === "/lists/new") {
+      props.handleListCreateFormDialog(true);
+    }
+  }, [props]);
+
   const handleClickOpen = () => {
     props.handleListCreateFormDialog(true);
     history.push("/lists/new");
@@ -47,21 +51,19 @@ const ListCreateFab = (props) => {
   return (
     <div>
       <Grid item xs={3}>
-        <ModalLink path={`${match.url}/new`} component={ExampleModalContent}>
-          <Fab
-            color="primary"
-            className={classes.fab}
-            aria-label="add"
-            variant="extended"
-            onClick={handleClickOpen}
-          >
-            <PostAddRoundedIcon
-              fontSize="large"
-              className={classes.extendedIcon}
-            />
-            NEW LIST
-          </Fab>
-        </ModalLink>
+        <Fab
+          color="primary"
+          className={classes.fab}
+          aria-label="add"
+          variant="extended"
+          onClick={handleClickOpen}
+        >
+          <PostAddRoundedIcon
+            fontSize="large"
+            className={classes.extendedIcon}
+          />
+          NEW LIST
+        </Fab>
       </Grid>
       <ListCreateFormDialog />
     </div>

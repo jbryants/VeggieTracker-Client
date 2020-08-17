@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { handleListCreateFormDialog, createList } from "../../../actions";
 import { reduxForm, Field } from "redux-form";
@@ -54,14 +54,6 @@ const renderTextField = ({
 
 const ListCreateFormDialog = (props) => {
   const { handleSubmit, reset, error } = props;
-  console.log(error);
-
-  useEffect(() => {
-    return () => {
-      console.log("will unmount");
-      reset();
-    };
-  }, []);
 
   const handleClose = () => {
     props.handleListCreateFormDialog(false);

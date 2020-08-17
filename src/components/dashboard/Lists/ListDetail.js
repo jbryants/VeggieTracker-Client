@@ -1,15 +1,13 @@
-import React, { useState } from "react";
-import ListDelete from "./ListDelete";
-
-import { makeStyles } from "@material-ui/core/styles";
-import Title from "../Title";
-import { Grid, Typography, Divider, Chip } from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
+import { Grid, Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import DeleteIcon from "@material-ui/icons/Delete";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import React, { useState } from "react";
 import ListItemChipList from "../ListItems/ListItemChipList";
+import Title from "../Title";
+import ListDelete from "./ListDelete";
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {

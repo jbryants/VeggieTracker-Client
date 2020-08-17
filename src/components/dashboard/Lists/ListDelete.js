@@ -1,18 +1,23 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { deleteList } from "../../../actions";
-import history from "../../../services/history";
-
 import Button from "@material-ui/core/Button";
-import DeleteIcon from "@material-ui/icons/Delete";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import DeleteIcon from "@material-ui/icons/Delete";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { deleteList } from "../../../actions";
+import history from "../../../services/history";
 
 const ListDelete = (props) => {
   const [open, setOpen] = React.useState(false);
+
+  useEffect(() => {
+    if (window.location.pathname === `/lists/delete/${props.listId}`) {
+      setOpen(true);
+    }
+  }, [props.listId]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -57,7 +62,7 @@ const ListDelete = (props) => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleDelete} color="secondary" autoFocus>
+          <Button onClick={handleDelete} color="secondary">
             Delete
           </Button>
         </DialogActions>

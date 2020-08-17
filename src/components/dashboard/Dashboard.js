@@ -1,15 +1,11 @@
-import React from "react";
-import requireAuth from "../requireAuth";
-
-import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
-
-import Header from "./Header";
-import Lists from "./Lists";
-
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
 import { Switch } from "react-router-dom";
 import { RouteWithSubRoutes } from "../../routes";
+import requireAuth from "../requireAuth";
+import Header from "./Header";
 
 const useStyles = makeStyles((theme) => ({
   root: {
