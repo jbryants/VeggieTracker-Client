@@ -7,8 +7,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DeleteIcon from "@material-ui/icons/Delete";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { deleteList } from "../../../actions";
-import history from "../../../services/history";
+import { deleteList } from "../../actions";
+import history from "../../services/history";
 
 const ListDelete = (props) => {
   const [open, setOpen] = React.useState(false);

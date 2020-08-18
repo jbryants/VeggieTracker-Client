@@ -1,10 +1,54 @@
+import React from "react";
+import { Link, Switch } from "react-router-dom";
 import SignIn from "../components/auth/SignIn";
 import SignUp from "../components/auth/SignUp";
 import Dashboard from "../components/dashboard/Dashboard";
-import Lists from "../components/dashboard/Lists";
 import ListCreateFab from "../components/dashboard/Lists/ListCreateFab";
-import ListDelete from "../components/dashboard/Lists/ListDelete";
+import ListDelete from "../components/Lists/ListDelete";
+import ListEdit from "../components/Lists/ListEdit";
+import ListList from "../components/Lists/ListList";
+import { RouteWithSubRoutes } from "../routes";
 
+function Analytics({ routes }) {
+  return (
+    <div>
+      <h2>Analytics</h2>
+      <ul>
+        <li>
+          <Link to="/analytics/start">StartAnalytics</Link>
+        </li>
+        <li>
+          <Link to="/analytics/finish">FinishAnalytics</Link>
+        </li>
+      </ul>
+      <Switch>
+        {routes.map((route, i) => (
+          <RouteWithSubRoutes key={i} {...route} />
+        ))}
+      </Switch>
+    </div>
+  );
+}
+
+function StartAnalytics() {
+  return <div>StartAnalytics</div>;
+}
+
+function FinishAnalytics() {
+  return <div>FinishAnalytics</div>;
+}
+
+function Messaging() {
+  return <div>Messaging</div>;
+}
+
+function GroupMessaging() {
+  return <div>GroupMessaging</div>;
+}
+
+function FriendMessaging() {
+  return <div>FriendMessaging</div>;
+}
 // Some folks find value in a centralized route config.
 // A route config is just data. React is great at mapping
 // data into components, and <Route> is a component.
@@ -21,68 +65,56 @@ export const routes = [
     path: "/signup",
     component: SignUp,
   },
-  // {
-  //   path: "/",
-  //   component: Tacos,
-  //   routes: [
-  //     {
-  //       path: "/bus",
-  //       component: Bus,
-  //     },
-  //     {
-  //       path: "/cart",
-  //       component: Cart,
-  //     },
-  //   ],
-  // },
   {
     path: "/",
     component: Dashboard,
     routes: [
       {
+        path: "/lists/edit/:id",
+        component: ListEdit,
+      },
+      {
         path: "/lists",
-        component: Lists,
+        component: ListList,
         routes: [
           {
-            path: "/new",
+            path: "/lists/new",
             component: ListCreateFab,
           },
           {
-            path: "/edit/:id",
-            component: Lists,
-          },
-          {
-            path: "/delete/:id",
+            path: "/lists/delete/:id",
             component: ListDelete,
           },
         ],
       },
-      // {
-      //   path: "/analytics",
-      //   component: Analytics,
-      // },
-      // {
-      //   path: "/messaging"
-      //   component: Messaging,
-      // }
+      {
+        path: "/analytics",
+        component: Analytics,
+        routes: [
+          {
+            path: "/analytics/start",
+            component: StartAnalytics,
+          },
+          {
+            path: "/analytics/finish",
+            component: FinishAnalytics,
+          },
+        ],
+      },
+      {
+        path: "/messaging",
+        component: Messaging,
+        routes: [
+          {
+            path: "/messaging/group",
+            component: GroupMessaging,
+          },
+          {
+            path: "/messaging/friend",
+            component: FriendMessaging,
+          },
+        ],
+      },
     ],
   },
-  // {
-  //   path: "/lists",
-  //   component: Lists,
-  //   routes: [
-  //     {
-  //       path: "/new",
-  //       component: Lists,
-  //     },
-  //     {
-  //       path: "/edit/:id",
-  //       component: Lists,
-  //     },
-  //     {
-  //       path: "/delete/:id",
-  //       component: Lists,
-  //     },
-  //   ],
-  // },
 ];

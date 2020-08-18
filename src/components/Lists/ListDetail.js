@@ -133,18 +133,6 @@ const ListDetail = (props) => {
             </Grid>
             <Grid item>
               <ListDelete listId={props.id} listName={props.name} />
-              {/* <Button
-                variant="contained"
-                color="secondary"
-                size="small"
-                className={classes.button}
-                startIcon={<DeleteIcon />}
-                onClick={() => {
-                  console.log(props.id + props.name);
-                }}
-              >
-                Delete
-              </Button> */}
             </Grid>
           </Grid>
         </Paper>

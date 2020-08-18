@@ -42,7 +42,6 @@ const Dashboard = ({ routes }) => {
             ))}
           </Switch>
         </Container>
-        {/* <Content /> */}
       </main>
     </div>
   );

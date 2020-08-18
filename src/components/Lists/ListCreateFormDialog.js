@@ -1,35 +1,28 @@
-import React from "react";
-import { connect } from "react-redux";
-import { handleListCreateFormDialog, createList } from "../../../actions";
-import { reduxForm, Field } from "redux-form";
-import { compose } from "redux";
-import history from "../../../services/history";
-
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
 import Alert from "@material-ui/lab/Alert";
+import React from "react";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { Field, reduxForm } from "redux-form";
+import { createList, handleListCreateFormDialog } from "../../actions";
+import history from "../../services/history";
 
 const validate = (values) => {
-  console.log(values);
   const errors = {};
-  const requiredFields = ["name", "shop"];
+  // shop isn't kept compulsory for now
+  const requiredFields = ["name"];
   requiredFields.forEach((field) => {
     if (!values[field]) {
       errors[field] = "Required";
     }
   });
-  // if (
-  //   values.email &&
-  //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-  // ) {
-  //   errors.email = "Invalid email address";
-  // }
   return errors;
 };
 
@@ -62,8 +55,9 @@ const ListCreateFormDialog = (props) => {
   };
 
   const onSubmit = (formProps) => {
-    console.log(formProps);
-    return props.createList(formProps);
+    return props.createList(formProps, () => {
+      props.handleListCreateFormDialog(false);
+    });
   };
 
   return (
