@@ -3,10 +3,10 @@ import { Link, Switch } from "react-router-dom";
 import SignIn from "../components/auth/SignIn";
 import SignUp from "../components/auth/SignUp";
 import Dashboard from "../components/dashboard/Dashboard";
-import ListCreateFab from "../components/dashboard/Lists/ListCreateFab";
-import ListDelete from "../components/Lists/ListDelete";
-import ListEdit from "../components/Lists/ListEdit";
-import ListList from "../components/Lists/ListList";
+import ListCreateFab from "../components/lists/ListCreateFab";
+import ListDelete from "../components/lists/ListDelete";
+import ListEdit from "../components/lists/ListEdit";
+import ListList from "../components/lists/ListList";
 import { RouteWithSubRoutes } from "../routes";
 
 function Analytics({ routes }) {

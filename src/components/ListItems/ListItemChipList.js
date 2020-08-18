@@ -1,10 +1,9 @@
-import React from "react";
-
-import { makeStyles } from "@material-ui/core/styles";
-// import Switch from "@material-ui/core/Switch";
-import Grow from "@material-ui/core/Grow";
 // import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Chip from "@material-ui/core/Chip";
+// import Switch from "@material-ui/core/Switch";
+import Grow from "@material-ui/core/Grow";
+import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {

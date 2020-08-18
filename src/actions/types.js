@@ -4,3 +4,4 @@ export const OPEN_LIST_CREATE_DIALOG = "OPEN_LIST_CREATE_DIALOG";
 export const CREATE_LIST = "CREATE_LIST";
 export const FETCH_LISTS = "FETCH_LISTS";
 export const DELETE_LIST = "DELETE_LIST";
+export const FETCH_LIST_ITEMS = "FETCH_LIST_ITEMS";

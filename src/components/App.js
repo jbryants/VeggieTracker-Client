@@ -1,15 +1,13 @@
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import React from "react";
 import { Router } from "react-router-dom";
-
 import { Routes } from "../routes";
 import history from "../services/history";
 
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-
 export default () => {
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: light)");
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
   const theme = React.useMemo(
     () =>

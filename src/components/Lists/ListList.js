@@ -1,7 +1,7 @@
 import Grid from "@material-ui/core/Grid";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchLists } from "../../../actions";
+import { fetchLists } from "../../actions";
 import ListCreateFab from "./ListCreateFab";
 import ListDetail from "./ListDetail";
 

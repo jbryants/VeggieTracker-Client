@@ -16,7 +16,7 @@ import history from "../../services/history";
 
 const validate = (values) => {
   const errors = {};
-  // shop isn't kept compulsory for now
+  // shop isn't kept compulsory for now, so not added in below array.
   const requiredFields = ["name"];
   requiredFields.forEach((field) => {
     if (!values[field]) {

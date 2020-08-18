@@ -5,9 +5,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import React, { useState } from "react";
-import ListItemChipList from "../ListItems/ListItemChipList";
-import Title from "../Title";
+import { Link } from "react-router-dom";
+import ListItemChipList from "../listItems/ListItemChipList";
 import ListDelete from "./ListDelete";
+import Title from "./ListTitle";
 
 const useStyles = makeStyles((theme) => ({
   seeMore: {
@@ -127,6 +128,8 @@ const ListDetail = (props) => {
                 size="small"
                 className={classes.button}
                 endIcon={<EditIcon />}
+                to={`/lists/edit/${props.id}`}
+                component={Link}
               >
                 Edit
               </Button>
