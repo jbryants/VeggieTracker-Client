@@ -4,6 +4,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
+import FilterListIcon from "@material-ui/icons/FilterList";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import React from "react";
@@ -65,13 +66,11 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        {
-          /* <Tooltip title="Filter list">
+        <Tooltip title="Filter list">
           <IconButton aria-label="filter list">
             <FilterListIcon />
           </IconButton>
-        </Tooltip> */
-        }
+        </Tooltip>
       )}
     </Toolbar>
   );

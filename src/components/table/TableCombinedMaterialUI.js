@@ -3,11 +3,18 @@ import InputBase from "@material-ui/core/InputBase";
 import MaUTable from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
+import TableFooter from "@material-ui/core/TableFooter";
 import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import React from "react";
 import { usePagination, useRowSelect, useSortBy, useTable } from "react-table";
 import EnhancedTableToolbar from "./EnhancedTableToolbar";
+import TablePaginationActions from "./TablePaginationActions";
+import Paper from "@material-ui/core/Paper";
+import TableContainer from "@material-ui/core/TableContainer";
+import { lighten, makeStyles } from "@material-ui/core/styles";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
 
 // Create an editable cell renderer
 const EditableCell = ({
@@ -58,11 +65,11 @@ const IndeterminateCheckbox = React.forwardRef(
       resolvedRef.current.indeterminate = indeterminate;
     }, [resolvedRef, indeterminate]);
 
-    console.log("defaultRef: ", defaultRef);
-    console.log("resolvedRef: ", resolvedRef);
-    console.log("indeterminate: ", indeterminate);
-    console.log("rest: ", rest);
-    console.log("ref: ", ref);
+    // console.log("defaultRef: ", defaultRef);
+    // console.log("resolvedRef: ", resolvedRef);
+    // console.log("indeterminate: ", indeterminate);
+    // console.log("rest: ", rest);
+    // console.log("ref: ", ref);
 
     return (
       <>
@@ -72,13 +79,40 @@ const IndeterminateCheckbox = React.forwardRef(
           //inputProps={{ "aria-label": "select all desserts" }}
           ref={resolvedRef}
           {...rest}
+          padding="checkbox"
         />
       </>
     );
   }
 );
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+  },
+  paper: {
+    width: "100%",
+    marginBottom: theme.spacing(2),
+  },
+  table: {
+    minWidth: 750,
+  },
+  visuallyHidden: {
+    border: 0,
+    clip: "rect(0 0 0 0)",
+    height: 1,
+    margin: -1,
+    overflow: "hidden",
+    padding: 0,
+    position: "absolute",
+    top: 20,
+    width: 1,
+  },
+}));
+
 function Table({ columns, data, updateMyData, skipPageReset }) {
+  const classes = useStyles();
+
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -139,97 +173,138 @@ function Table({ columns, data, updateMyData, skipPageReset }) {
     }
   );
 
+  const handleChangePage = (action) => {
+    switch (action) {
+      case "FIRST_PAGE":
+        gotoPage(0);
+        break;
+
+      case "PREVIOUS_PAGE":
+        previousPage();
+        break;
+
+      case "NEXT_PAGE":
+        nextPage();
+        break;
+
+      case "LAST_PAGE":
+        gotoPage(Math.max(0, Math.ceil(pageCount / pageSize) - 1));
+        break;
+
+      default:
+        break;
+    }
+  };
+
   // Render the UI for your table
   return (
-    <>
-      <EnhancedTableToolbar numSelected={selectedFlatRows.length} />
-      <MaUTable {...getTableProps()} size="small" aria-label="a dense table">
-        <TableHead>
-          {headerGroups.map((headerGroup) => (
-            <TableRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <TableCell
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                >
-                  {column.render("Header")}
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
-                  </span>
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableHead>
-        <TableBody {...getTableBodyProps()}>
-          {page.map((row, i) => {
-            prepareRow(row);
-            return (
-              <TableRow {...row.getRowProps()} selected={selectedRowIds[i]}>
-                {row.cells.map((cell) => {
-                  return (
-                    <TableCell {...cell.getCellProps()}>
-                      {cell.render("Cell")}
+    <div className={classes.root}>
+      <Paper className={classes.paper}>
+        <EnhancedTableToolbar numSelected={selectedFlatRows.length} />
+        <TableContainer>
+          <MaUTable
+            {...getTableProps()}
+            size="small"
+            aria-label="a dense table"
+            className={classes.table}
+          >
+            <TableHead>
+              {headerGroups.map((headerGroup) => (
+                <TableRow {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <TableCell
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      padding="none"
+                      align={column.numeric ? "right" : "left"}
+                      //   sortDirection={
+                      //     column.isSorted
+                      //       ? column.isSortedDesc
+                      //         ? "desc"
+                      //         : "asc"
+                      //       : false
+                      //   }
+                    >
+                      <TableSortLabel
+                        active={column.isSorted}
+                        direction={column.isSortedDesc ? "desc" : "asc"}
+                        onClick={column.getSortByToggleProps}
+                      >
+                        {column.isSorted ? (
+                          <span className={classes.visuallyHidden}>
+                            {column.isSortedDesc
+                              ? "sorted descending"
+                              : "sorted ascending"}
+                          </span>
+                        ) : null}
+                        {column.render("Header")}
+                        {/* <span>
+                        {column.isSorted
+                          ? column.isSortedDesc
+                            ? " 🔽"
+                            : " 🔼"
+                          : null}
+                      </span> */}
+                      </TableSortLabel>
                     </TableCell>
-                  );
-                })}
+                  ))}
+                </TableRow>
+              ))}
+            </TableHead>
+            <TableBody {...getTableBodyProps()}>
+              {page.map((row, i) => {
+                prepareRow(row);
+                return (
+                  <TableRow
+                    {...row.getRowProps()}
+                    selected={selectedRowIds[row.id]}
+                    hover
+                  >
+                    {row.cells.map((cell) => {
+                      return (
+                        <TableCell
+                          {...cell.getCellProps()}
+                          padding="none"
+                          align={cell.column.numeric ? "right" : "left"}
+                          style={{ width: 160 }}
+                        >
+                          {cell.render("Cell")}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[
+                    5,
+                    10,
+                    25,
+                    { label: "All", value: data.length },
+                  ]}
+                  colSpan={columns.length + 1}
+                  count={data.length}
+                  rowsPerPage={pageSize}
+                  page={pageIndex}
+                  SelectProps={{
+                    inputProps: { "aria-label": "rows per page" },
+                    native: true,
+                  }}
+                  onChangePage={handleChangePage}
+                  onChangeRowsPerPage={(e) => {
+                    setPageSize(Number(e.target.value));
+                  }}
+                  ActionsComponent={TablePaginationActions}
+                />
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </MaUTable>
-      {/* 
-        Pagination can be built however you'd like. 
-        This is just a very basic UI implementation:
-      */}
-      <div className="pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {"<<"}
-        </button>{" "}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {"<"}
-        </button>{" "}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {">"}
-        </button>{" "}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {">>"}
-        </button>{" "}
-        <span>
-          Page{" "}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{" "}
-        </span>
-        <span>
-          | Go to page:{" "}
-          <input
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              gotoPage(page);
-            }}
-            style={{ width: "100px" }}
-          />
-        </span>{" "}
-        <select
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
-      </div>
-    </>
+            </TableFooter>
+          </MaUTable>
+        </TableContainer>
+      </Paper>
+    </div>
   );
 }
 
@@ -247,6 +322,12 @@ function TableCombined() {
       Header: "Last Name",
       accessor: "lastName",
       sortType: "basic",
+    },
+    {
+      Header: "Age",
+      accessor: "age",
+      sortType: "basic",
+      numeric: true,
     },
   ];
 

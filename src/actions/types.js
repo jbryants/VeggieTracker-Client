@@ -5,3 +5,4 @@ export const CREATE_LIST = "CREATE_LIST";
 export const FETCH_LISTS = "FETCH_LISTS";
 export const DELETE_LIST = "DELETE_LIST";
 export const FETCH_LIST_ITEMS = "FETCH_LIST_ITEMS";
+export const UPDATE_LIST_ITEMS = "UPDATE_LIST_ITEMS";
