@@ -6,7 +6,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import ListItemChipList from "../listItems/ListItemChipList";
+import ListItemChipList from "../listItems/ListItemsChipList";
 import ListDelete from "./ListDelete";
 import Title from "./ListTitle";
 
@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     flexDirection: "column",
   },
-
   expandIcon: {
     transition: theme.transitions.create(["transform"], {
       duration: theme.transitions.duration.short,

@@ -7,7 +7,7 @@ import { Routes } from "../routes";
 import history from "../services/history";
 
 export default () => {
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: light)");
 
   const theme = React.useMemo(
     () =>

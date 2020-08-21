@@ -18,7 +18,7 @@ import TableSimple from "../components/table/TableSimple";
 import TableSorting from "../components/table/TableSorting";
 import TableCombined from "../components/tableCombined/TableCombined";
 import { RouteWithSubRoutes } from "../routes";
-import MUIT from "../components/MUIT/MUIT";
+import ListItemTable from "../components/listItems/ListItemsTable";
 
 function Analytics({ routes }) {
   return (
@@ -70,7 +70,7 @@ function FriendMessaging() {
 export const routes = [
   {
     path: "/muit",
-    component: MUIT,
+    component: ListItemTable,
   },
   {
     path: "/table",
