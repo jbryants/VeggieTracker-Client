@@ -12,7 +12,6 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import InputBase from "@material-ui/core/InputBase";
-import { rows } from "./data";
 import {
   descendingComparator,
   getComparator,
@@ -47,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
     top: 20,
     width: 1,
   },
+  totalCell: {
+    fontWeight: "bold",
+    //fontSize: "medium",
+  },
 }));
 
 const EnhancedTable = (props) => {
@@ -55,12 +58,12 @@ const EnhancedTable = (props) => {
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   useEffect(() => {
-    props.fetchListItems();
-  }, [props]);
+    props.fetchListItems(props.listId);
+  }, []);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -119,9 +122,6 @@ const EnhancedTable = (props) => {
   };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
-
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -182,18 +182,36 @@ const EnhancedTable = (props) => {
                       </TableCell>
                       <TableCell align="right">{row.base_quantity}</TableCell>
                       <TableCell align="right">{row.base_price}</TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
+                      <TableCell align="right">{row.total_quantity}</TableCell>
+                      <TableCell align="right">{row.total_price}</TableCell>
+                      {/* <TableCell align="right">{row.calories}</TableCell>
                       <TableCell align="right">{row.fat}</TableCell>
                       <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
+                      <TableCell align="right">{row.protein}</TableCell> */}
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
+
+              <TableRow>
+                {
+                  // Store the total in an array and use map() here to dynamically generate TableCells"
+                }
+                <TableCell className={classes.totalCell} colSpan={2}>
+                  Total
+                </TableCell>
+                <TableCell className={classes.totalCell} align="right">
+                  653.64
+                </TableCell>
+                <TableCell className={classes.totalCell} align="right">
+                  653.64
+                </TableCell>
+                <TableCell className={classes.totalCell} align="right">
+                  653.64
+                </TableCell>
+                <TableCell className={classes.totalCell} align="right">
+                  653.64
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>

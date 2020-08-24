@@ -2,11 +2,11 @@ import React from "react";
 import ListItemsCreate from "../listItems/ListItemsCreate";
 import ListItemsTable from "../listItems/ListItemsTable";
 
-function ListEdit() {
+function ListEdit(props) {
   return (
     <div>
       <ListItemsCreate />
-      <ListItemsTable />
+      <ListItemsTable listId={props.match.params.id} />
     </div>
   );
 }
