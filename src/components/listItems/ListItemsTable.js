@@ -21,8 +21,7 @@ import EnhancedTableHead from "./ListItemsTableHead";
 import EnhancedTableToolbar from "./ListItemsTableToolbar";
 
 import { connect } from "react-redux";
-import { updateListItems } from "../../actions";
-import { fetchListItems } from "../../actions";
+import { updateListItems, fetchListItems, filterItemsSet } from "../../actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,6 +63,10 @@ const EnhancedTable = (props) => {
   useEffect(() => {
     props.fetchListItems(props.listId);
   }, []);
+
+  useEffect(() => {
+    props.filterItemsSet();
+  }, [props.rows]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -236,9 +239,11 @@ const EnhancedTable = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { rows: state.listItemsReducers };
+  return { rows: state.listItemsReducers, items: state.itemsReducers };
 };
 
-export default connect(mapStateToProps, { updateListItems, fetchListItems })(
-  EnhancedTable
-);
+export default connect(mapStateToProps, {
+  updateListItems,
+  fetchListItems,
+  filterItemsSet,
+})(EnhancedTable);

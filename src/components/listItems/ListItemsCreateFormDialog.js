@@ -14,14 +14,10 @@ import Select from "@material-ui/core/Select";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
-import { setListItemsFormValues } from "../../actions";
+import { submitListItemCreateFormValues } from "../../actions";
 
 const useStyles = makeStyles((theme) => ({
-  quantityTextField: {
-    //width: "70%",
-  },
   formControl: {
-    //margin: theme.spacing(1),
     width: "100%",
   },
 }));
@@ -29,32 +25,38 @@ const useStyles = makeStyles((theme) => ({
 function FormDialog(props) {
   const classes = useStyles();
   const [formState, setFormState] = useState({
-    itemName: null,
-    units: props.item ? props.item.default_unit : "dozens",
-    baseQuantity: props.item ? `${props.item.default_quantity}` : "",
-    basePrice: "",
-    totalQuantity: "",
-    totalPrice: "",
+    list: props.listId ? props.listId : null,
+    item: null,
+    unit: "kg",
+    base_quantity: "0",
+    base_price: "0",
+    total_quantity: "0",
   });
+  const [totalPrice, setTotalPrice] = useState("0");
+
+  console.log(props.item);
 
   useEffect(() => {
     setFormState({
       ...formState,
-      itemName: props.item ? props.item.name : null,
-      units: props.item ? props.item.default_unit : "dozens",
-      baseQuantity: props.item ? `${props.item.default_quantity}` : "",
+      list: props.listId ? props.listId : null,
+      item: props.item ? props.item.item : null,
+      unit: props.item ? props.item.unit : "kg",
+      base_quantity: props.item ? `${props.item.base_quantity}` : "0.25",
+      base_price: props.item ? `${props.item.base_price}` : "0",
+      total_quantity: props.item ? `${props.item.total_quantity}` : "0",
     });
 
     return () => {
       // reset back to original state
       setFormState({
-        itemName: null,
-        units: "kilos",
-        baseQuantity: "",
-        basePrice: "",
-        totalQuantity: "",
-        totalPrice: "",
+        ...formState,
+        unit: "kg",
+        base_quantity: "0",
+        base_price: "0",
+        total_quantity: "0",
       });
+      setTotalPrice("0");
     };
   }, [props.item]);
 
@@ -67,7 +69,10 @@ function FormDialog(props) {
   };
 
   const handleSubmit = (event) => {
-    props.setListItemsFormValues(formState);
+    props.submitListItemCreateFormValues({
+      ...formState,
+      base_unit: formState.unit,
+    });
     props.handleClose();
   };
 
@@ -75,11 +80,11 @@ function FormDialog(props) {
     <div>
       <Dialog
         open={props.open}
-        onClose={props.handleClose}
+        onClose={handleSubmit}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">
-          {props.item ? props.item.title : "Item name"}
+          {props.item ? props.item.name : "Item name"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -89,55 +94,62 @@ function FormDialog(props) {
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="age-native-helper">Units</InputLabel>
             <NativeSelect
-              value={formState.units}
+              value={formState.unit}
               onChange={handleChange}
               inputProps={{
-                name: "units",
+                name: "unit",
                 id: "units-native-helper",
               }}
               autoFocus
             >
               {/* <option aria-label="None" value="" /> */}
               <option value={"kg"}>Kilos</option>
-              <option value={"dozens"}>Dozens</option>
-              <option value={"units"}>Units</option>
+              <option value={"dozen"}>Dozens</option>
+              {/* <option value={"units"}>Units</option> */}
             </NativeSelect>
             <FormHelperText>Type of units for item</FormHelperText>
           </FormControl>
+          {formState.unit !== "dozen" && (
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="age-native-helper">{`Base Quantity${
+                formState.unit !== "" ? ` in ${formState.unit}` : ""
+              }`}</InputLabel>
+
+              <NativeSelect
+                value={formState.base_quantity}
+                onChange={handleChange}
+                inputProps={{
+                  name: "base_quantity",
+                  id: "base_quantity",
+                }}
+              >
+                <option value={"0.25"}>Quarter</option>
+                <option value={"1.0"}>Whole</option>
+              </NativeSelect>
+              {/* <FormHelperText>Type of units for item</FormHelperText> */}
+            </FormControl>
+          )}
           <TextField
-            name="baseQuantity"
+            name="base_price"
             margin="dense"
-            id="baseQuantity"
-            label={`Base Quantity${
-              formState.units !== "" ? ` in ${formState.units}` : ""
-            }`}
-            type="number"
-            className={classes.quantityTextField}
-            onChange={handleChange}
-            value={formState.baseQuantity}
-            fullWidth
-          />
-          <TextField
-            name="basePrice"
-            margin="dense"
-            id="basePrice"
+            id="base_price"
             label="Base Price"
             type="number"
             onChange={handleChange}
-            value={formState.basePrice}
+            value={formState.base_price}
             fullWidth
           />
           <TextField
-            name="totalQuantity"
+            name="total_quantity"
             margin="dense"
-            id="totalQuantity"
+            id="total_quantity"
             label={`Total Quantity${
-              formState.units !== "" ? ` in ${formState.units}` : ""
+              formState.unit !== "" ? ` in ${formState.unit}` : ""
             }`}
             type="number"
             className={classes.quantityTextField}
             onChange={handleChange}
-            value={formState.totalQuantity}
+            value={formState.total_quantity}
             fullWidth
           />
           <TextField
@@ -147,12 +159,12 @@ function FormDialog(props) {
             label="Total Price"
             type="number"
             onChange={handleChange}
-            value={formState.totalPrice}
+            value={totalPrice}
             fullWidth
           />
         </DialogContent>
         <DialogActions>
-          {/* <Button onClick={props.handleClose} color="primary">
+          {/* <Button onClick={handleSubmit} color="primary">
             Fill in later
           </Button> */}
           <Button onClick={handleSubmit} color="primary">
@@ -164,67 +176,4 @@ function FormDialog(props) {
   );
 }
 
-export default connect(null, { setListItemsFormValues })(FormDialog);
-
-// {
-//   "total_quantity": 1.0,
-//   "unit": "kg",
-//   "base_quantity": 1.0,
-//   "base_unit": "kg",
-//   "base_price": 20,
-//   "list": 6,
-//   "item": 2
-// }
-
-// {
-//   "total_quantity": "",
-//   "unit": "kg",
-//   "base_quantity": "0.25",
-//   "base_unit": "kg",
-//   "base_price": "",
-//   "order": "",
-//   "list": 13,
-//   "item": 3
-// }
-
-// [
-//   {
-//     total_quantity: "1",
-//     unit: "kg",
-//     base_quantity: "0.25",
-//     base_unit: "kg",
-//     base_price: "20",
-//     list: 24,
-//     item: 3,
-//   },
-//   {
-//     total_quantity: "1",
-//     unit: "kg",
-//     base_quantity: "0.25",
-//     base_unit: "kg",
-//     base_price: "30",
-//     list: 24,
-//     item: 2,
-//   },
-// ];
-
-// [
-//   {
-//       "total_quantity": 1.0,
-//       "unit": "kg",
-//       "base_quantity": 1.0,
-//       "base_unit": "kg",
-//       "base_price": 20,
-//       "list": 37,
-//       "item": 2
-//   },
-//   {
-//       "total_quantity": 1.0,
-//       "unit": "kg",
-//       "base_quantity": 0.25,
-//       "base_unit": "kg",
-//       "base_price": 40,
-//       "list": 37,
-//       "item": 1
-//   }
-// ]
+export default connect(null, { submitListItemCreateFormValues })(FormDialog);

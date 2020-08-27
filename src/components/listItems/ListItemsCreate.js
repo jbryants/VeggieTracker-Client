@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, { useState, useEffect } from "react";
 import Chip from "@material-ui/core/Chip";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -10,9 +9,19 @@ import FormDialog from "./ListItemsCreateFormDialog";
 import { connect } from "react-redux";
 import {
   fetchItems,
-  fetchItemsByQuery,
-  setListItemsFormValues,
+  filterItemsSet,
+  createListItems,
+  appendListItemsFormValue,
+  deleteListItemsFormValue,
 } from "../../actions";
+import Autocomplete, {
+  createFilterOptions,
+} from "@material-ui/lab/Autocomplete";
+
+const filterOptions = createFilterOptions({
+  matchFrom: "start",
+  stringify: (option) => option.name,
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,12 +41,14 @@ function ListItemsCreate(props) {
 
   useEffect(() => {
     props.fetchItems();
+    props.filterItemsSet();
   }, []);
 
   useEffect(() => {
     // Debouncing
     const timerId = setTimeout(() => {
-      props.fetchItemsByQuery(inputValue);
+      props.fetchItems(inputValue);
+      props.filterItemsSet();
     }, 500);
 
     return () => {
@@ -53,18 +64,18 @@ function ListItemsCreate(props) {
     setOpen(false);
   };
 
-  const handleChange = (event, newValue) => {
-    if (newValue.length > props.values.length) {
-      console.log("increasing...", newValue);
+  const handleChange = (event, newValues) => {
+    if (newValues.length > props.values.length) {
+      props.appendListItemsFormValue(newValues[newValues.length - 1]);
       handleClickOpen();
-    } else if (newValue.length < props.values.length) {
-      console.log("decreasing...time to filter", newValue);
+    } else if (newValues.length < props.values.length) {
+      props.deleteListItemsFormValue(newValues);
     }
   };
 
   const handleSubmit = () => {
     if (props.values.length > 0) {
-      console.log("Submitting...", props.values);
+      props.createListItems(props.values);
     } else {
       setError(true);
     }
@@ -80,6 +91,7 @@ function ListItemsCreate(props) {
         onOpen={() => setError(false)}
         onChange={handleChange}
         onInputChange={(e, value) => setInputValue(value)}
+        filterOptions={filterOptions}
         renderInput={(params) => (
           <TextField
             name="listItems"
@@ -98,6 +110,7 @@ function ListItemsCreate(props) {
         open={open}
         handleClickOpen={handleClickOpen}
         handleClose={handleClose}
+        listId={props.listId}
         item={
           props.values.length > 0 ? props.values[props.values.length - 1] : null
         }
@@ -133,6 +146,8 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   fetchItems,
-  fetchItemsByQuery,
-  setListItemsFormValues,
+  filterItemsSet,
+  createListItems,
+  appendListItemsFormValue,
+  deleteListItemsFormValue,
 })(ListItemsCreate);

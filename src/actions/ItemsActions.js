@@ -1,13 +1,52 @@
 import django from "../apis/djangoBackend";
-import { FETCH_ITEMS, FETCH_ITEMS_BY_QUERY } from "../actions/types";
+import { FETCH_ITEMS, FILTER_ITEMS } from "../actions/types";
+import _ from "lodash";
 
-// used for search where we need all items to select from
-export const fetchItems = () => async (dispatch) => {
-  const response = await django.get("/items/");
-  dispatch({ type: FETCH_ITEMS, payload: response.data.results });
+const transformResponseHelper = (response) => {
+  // Transforming the response data in appropriate way in order
+  // to be used for addition of items to list and
+  // creation of listitem entity.
+  return response.data.results.map((value) => {
+    value.item = value.id;
+    value.unit = value.default_unit;
+    value.base_unit = value.default_unit;
+    value.base_quantity =
+      value.default_quantity === 1 ? "1.0" : value.default_quantity;
+
+    delete value.id;
+    delete value.default_unit;
+    delete value.default_quantity;
+    delete value.category;
+
+    return {
+      ...value,
+      total_quantity: 0,
+      base_price: 0,
+      list: 0,
+    };
+  });
 };
 
-export const fetchItemsByQuery = (query) => async (dispatch) => {
-  const response = await django.get(`/items/?search=${query}`);
-  dispatch({ type: FETCH_ITEMS, payload: response.data.results });
+export const fetchItems = (query = "") => async (dispatch) => {
+  let response;
+
+  if (query === "") {
+    response = await django.get("/items/");
+  } else {
+    response = await django.get(`/items/?search=${query}`);
+  }
+
+  const transformedResponse = transformResponseHelper(response);
+
+  dispatch({ type: FETCH_ITEMS, payload: transformedResponse });
+};
+
+export const filterItemsSet = () => (dispatch, getState) => {
+  const filteredData = _.differenceBy(
+    getState().itemsReducers,
+    getState().listItemsReducers,
+    "item"
+  );
+  console.log(filteredData);
+  dispatch({ type: FILTER_ITEMS, payload: filteredData });
 };
