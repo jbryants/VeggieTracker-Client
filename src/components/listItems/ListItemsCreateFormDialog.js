@@ -19,6 +19,7 @@ import { submitListItemCreateFormValues } from "../../actions";
 const useStyles = makeStyles((theme) => ({
   formControl: {
     width: "100%",
+    paddingBottom: theme.spacing(1),
   },
 }));
 
@@ -27,14 +28,84 @@ function FormDialog(props) {
   const [formState, setFormState] = useState({
     list: props.listId ? props.listId : null,
     item: null,
+    base_unit: "kg",
     unit: "kg",
-    base_quantity: "0",
+    base_quantity: "0.25",
     base_price: "0",
     total_quantity: "0",
   });
   const [totalPrice, setTotalPrice] = useState("0");
 
-  console.log(props.item);
+  useEffect(() => {
+    // while base_quantity changes, we need to update
+    // base_price using base_price * base_quantity
+    // which in turn will effect total_price
+
+    // Ok, so this above mentioned update needs to take place,
+    // I need to provide handling for different units cases
+    // Kg & kg
+    if (formState.base_unit === "kg" && formState.unit === "kg") {
+      setFormState({
+        ...formState,
+        base_price:
+          formState.base_quantity === "0.25"
+            ? formState.base_price / 4
+            : formState.base_price * 4,
+      });
+    }
+
+    // g & g
+    if (formState.base_unit === "grams" && formState.unit === "grams") {
+      setFormState({
+        ...formState,
+        base_price:
+          formState.base_quantity === "0.25"
+            ? formState.base_price / 4
+            : formState.base_price * 4,
+      });
+    }
+  }, [formState.base_quantity]);
+
+  useEffect(() => {
+    // while base_price changes, we need to update
+    // total_price accordingly if total_quantity is given
+    // but this can cause a circular infinite effect
+
+    console.log("base price changing...");
+    if (formState.base_unit === "kg" && formState.unit === "kg") {
+      setTotalPrice(
+        (parseFloat(formState.total_quantity) /
+          parseFloat(formState.base_quantity)) *
+          parseFloat(formState.base_price)
+      );
+    }
+  }, [formState.base_price]);
+
+  useEffect(() => {
+    // while total_quantity changes, we need to update
+    // total_price using (total_quantity / base_quantity) * base_price
+    console.log("total quantity changing...");
+    if (formState.base_unit === "kg" && formState.unit === "kg") {
+      setTotalPrice(
+        (parseFloat(formState.total_quantity) /
+          parseFloat(formState.base_quantity)) *
+          parseFloat(formState.base_price)
+      );
+    }
+  }, [formState.total_quantity]);
+
+  const handleTotalPriceChange = (event) => {
+    setTotalPrice(event.target.value);
+    if (formState.base_unit === "kg" && formState.unit === "kg") {
+      setFormState({
+        ...formState,
+        base_price:
+          parseFloat(event.target.value) /
+          (parseFloat(formState.total_quantity) /
+            parseFloat(formState.base_quantity)),
+      });
+    }
+  };
 
   useEffect(() => {
     setFormState({
@@ -69,10 +140,17 @@ function FormDialog(props) {
   };
 
   const handleSubmit = (event) => {
-    props.submitListItemCreateFormValues({
-      ...formState,
-      base_unit: formState.unit,
-    });
+    if (formState.unit === "gram") {
+      console.log("gram state");
+      props.submitListItemCreateFormValues({
+        ...formState,
+        unit: "kg",
+        base_unit: "kg",
+        total_quantity: parseInt(formState.total_quantity) / 1000,
+      });
+    } else {
+      props.submitListItemCreateFormValues(formState);
+    }
     props.handleClose();
   };
 
@@ -92,27 +170,28 @@ function FormDialog(props) {
             requested below.
           </DialogContentText>
           <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="age-native-helper">Units</InputLabel>
+            <InputLabel htmlFor="age-native-helper">Base Units</InputLabel>
             <NativeSelect
-              value={formState.unit}
+              value={formState.base_unit}
               onChange={handleChange}
               inputProps={{
-                name: "unit",
-                id: "units-native-helper",
+                name: "base_unit",
+                id: "base-units-native-helper",
               }}
               autoFocus
             >
               {/* <option aria-label="None" value="" /> */}
+              <option value={"grams"}>Grams</option>
               <option value={"kg"}>Kilos</option>
               <option value={"dozen"}>Dozens</option>
               {/* <option value={"units"}>Units</option> */}
             </NativeSelect>
-            <FormHelperText>Type of units for item</FormHelperText>
+            <FormHelperText>Type of units for base quantity</FormHelperText>
           </FormControl>
-          {formState.unit !== "dozen" && (
+          {formState.base_unit !== "dozen" && (
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="age-native-helper">{`Base Quantity${
-                formState.unit !== "" ? ` in ${formState.unit}` : ""
+                formState.base_unit !== "" ? ` in ${formState.base_unit}` : ""
               }`}</InputLabel>
 
               <NativeSelect
@@ -139,6 +218,24 @@ function FormDialog(props) {
             value={formState.base_price}
             fullWidth
           />
+          {formState.base_unit !== "dozen" && (
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="age-native-helper">Units</InputLabel>
+              <NativeSelect
+                value={formState.unit}
+                onChange={handleChange}
+                inputProps={{
+                  name: "unit",
+                  id: "units-native-helper",
+                }}
+              >
+                <option value={"gram"}>Grams</option>
+                <option value={"kg"}>Kilos</option>
+                <option value={"dozen"}>Dozens</option>
+              </NativeSelect>
+              <FormHelperText>Type of units for total quantity</FormHelperText>
+            </FormControl>
+          )}
           <TextField
             name="total_quantity"
             margin="dense"
@@ -158,7 +255,7 @@ function FormDialog(props) {
             id="totalPrice"
             label="Total Price"
             type="number"
-            onChange={handleChange}
+            onChange={handleTotalPriceChange}
             value={totalPrice}
             fullWidth
           />

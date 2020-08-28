@@ -39,14 +39,14 @@ export const fetchItems = (query = "") => async (dispatch) => {
   const transformedResponse = transformResponseHelper(response);
 
   dispatch({ type: FETCH_ITEMS, payload: transformedResponse });
+  dispatch(filterItemsSet());
 };
 
 export const filterItemsSet = () => (dispatch, getState) => {
-  const filteredData = _.differenceBy(
+  const filteredItems = _.differenceBy(
     getState().itemsReducers,
     getState().listItemsReducers,
     "item"
   );
-  console.log(filteredData);
-  dispatch({ type: FILTER_ITEMS, payload: filteredData });
+  dispatch({ type: FILTER_ITEMS, payload: filteredItems });
 };

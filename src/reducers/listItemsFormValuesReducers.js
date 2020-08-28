@@ -2,6 +2,7 @@ import {
   LIST_ITEM_CREATE_FORM_VALUES,
   APPEND_LIST_ITEMS_FORM_VALUE,
   DELETE_LIST_ITEMS_FORM_VALUE,
+  RESET_LIST_ITEMS_FORM_VALUES,
 } from "../actions/types";
 import _ from "lodash";
 
@@ -22,6 +23,8 @@ export default (state = INITIAL_STATE, action) => {
       });
     case DELETE_LIST_ITEMS_FORM_VALUE:
       return _.intersectionBy(state, action.payload, "item");
+    case RESET_LIST_ITEMS_FORM_VALUES:
+      return action.payload;
     default:
       return state;
   }

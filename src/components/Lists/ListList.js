@@ -38,4 +38,6 @@ const mapStateToProps = (state) => {
   return { lists: Object.values(state.listReducers) };
 };
 
-export default connect(mapStateToProps, { fetchLists })(ListList);
+export default connect(mapStateToProps, {
+  fetchLists,
+})(ListList);

@@ -13,6 +13,7 @@ import {
   createListItems,
   appendListItemsFormValue,
   deleteListItemsFormValue,
+  resetListItemsFormValues,
 } from "../../actions";
 import Autocomplete, {
   createFilterOptions,
@@ -36,25 +37,36 @@ const useStyles = makeStyles((theme) => ({
 function ListItemsCreate(props) {
   const classes = useStyles();
   const [inputValue, setInputValue] = useState("");
+  const [inputValues, setInputValues] = useState([]);
   const [error, setError] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     props.fetchItems();
-    props.filterItemsSet();
   }, []);
 
   useEffect(() => {
     // Debouncing
     const timerId = setTimeout(() => {
       props.fetchItems(inputValue);
-      props.filterItemsSet();
     }, 500);
 
     return () => {
       clearTimeout(timerId);
     };
   }, [inputValue]);
+
+  useEffect(() => {
+    console.log("i was called");
+    if (inputValues.length > props.values.length) {
+      props.appendListItemsFormValue(inputValues[inputValues.length - 1]);
+      handleClickOpen();
+    } else if (inputValues.length < props.values.length) {
+      props.deleteListItemsFormValue(inputValues);
+    } else if (inputValues.length === 0) {
+      props.resetListItemsFormValues();
+    }
+  }, [inputValues]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -64,21 +76,13 @@ function ListItemsCreate(props) {
     setOpen(false);
   };
 
-  const handleChange = (event, newValues) => {
-    if (newValues.length > props.values.length) {
-      props.appendListItemsFormValue(newValues[newValues.length - 1]);
-      handleClickOpen();
-    } else if (newValues.length < props.values.length) {
-      props.deleteListItemsFormValue(newValues);
-    }
-  };
-
   const handleSubmit = () => {
     if (props.values.length > 0) {
       props.createListItems(props.values);
     } else {
       setError(true);
     }
+    setInputValues([]);
   };
 
   return (
@@ -89,9 +93,10 @@ function ListItemsCreate(props) {
         options={props.items}
         getOptionLabel={(option) => option.name}
         onOpen={() => setError(false)}
-        onChange={handleChange}
         onInputChange={(e, value) => setInputValue(value)}
         filterOptions={filterOptions}
+        value={inputValues}
+        onChange={(e, values) => setInputValues(values)}
         renderInput={(params) => (
           <TextField
             name="listItems"
@@ -128,7 +133,11 @@ function ListItemsCreate(props) {
           </Button>
         </Grid>
         <Grid item>
-          <Button variant="contained" className={classes.clearValuesButton}>
+          <Button
+            onClick={() => setInputValues([])}
+            variant="contained"
+            className={classes.clearValuesButton}
+          >
             Clear Values
           </Button>
         </Grid>
@@ -150,4 +159,5 @@ export default connect(mapStateToProps, {
   createListItems,
   appendListItemsFormValue,
   deleteListItemsFormValue,
+  resetListItemsFormValues,
 })(ListItemsCreate);

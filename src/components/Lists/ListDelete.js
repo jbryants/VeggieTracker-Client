@@ -14,6 +14,19 @@ const ListDelete = (props) => {
   const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
+    const callback = () => {
+      if (document.location.pathname === "/lists") {
+        setOpen(false);
+      }
+    };
+    window.addEventListener("popstate", callback);
+
+    return () => {
+      window.removeEventListener("popstate", callback);
+    };
+  }, []);
+
+  useEffect(() => {
     if (window.location.pathname === `/lists/delete/${props.listId}`) {
       setOpen(true);
     }
@@ -30,8 +43,8 @@ const ListDelete = (props) => {
   };
 
   const handleDelete = () => {
-    props.deleteList(props.listId);
     handleClose();
+    props.deleteList(props.listId);
   };
 
   return (

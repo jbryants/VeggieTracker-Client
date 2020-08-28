@@ -35,14 +35,23 @@ const useStyles = makeStyles((theme) => ({
 const ListCreateFab = (props) => {
   const classes = useStyles();
 
+  const { handleListCreateFormDialog } = props;
+
   useEffect(() => {
     if (window.location.pathname === "/lists/new") {
-      props.handleListCreateFormDialog(true);
+      handleListCreateFormDialog(true);
     }
-  }, [props]);
+
+    window.onpopstate = () => {
+      // on back button click on browser
+      if (document.location.pathname === "/lists") {
+        handleListCreateFormDialog(false);
+      }
+    };
+  }, [handleListCreateFormDialog]);
 
   const handleClickOpen = () => {
-    props.handleListCreateFormDialog(true);
+    handleListCreateFormDialog(true);
     history.push("/lists/new");
   };
 
@@ -68,10 +77,4 @@ const ListCreateFab = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return { open: state.dialogReducers.openListCreateFormDialog };
-};
-
-export default connect(mapStateToProps, { handleListCreateFormDialog })(
-  ListCreateFab
-);
+export default connect(null, { handleListCreateFormDialog })(ListCreateFab);
