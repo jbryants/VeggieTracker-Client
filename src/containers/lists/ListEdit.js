@@ -1,6 +1,6 @@
 import React from "react";
-import ListItemsCreate from "../listItems/ListItemsCreate";
-import ListItemsTable from "../listItems/ListItemsTable";
+import ListItemsCreate from "../listItems/CreateDialogForm/CreateContainer";
+import ListItemsTable from "../listItems/Table/ListItemsTableContainer";
 
 function ListEdit({ match }) {
   return (

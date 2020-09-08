@@ -21,7 +21,11 @@ import EnhancedTableHead from "./ListItemsTableHead";
 import EnhancedTableToolbar from "./ListItemsTableToolbar";
 
 import { connect } from "react-redux";
-import { updateListItems, fetchListItems, filterItemsSet } from "../../actions";
+import {
+  updateListItems,
+  fetchListItems,
+  filterItemsSet,
+} from "../../../actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {

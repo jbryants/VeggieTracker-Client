@@ -6,7 +6,7 @@ import dialogReducers from "./dialogReducers";
 import listReducers from "./listReducers";
 import itemsReducers from "./itemsReducers";
 import listItemsReducers from "./listItemsReducers";
-import listItemsFormValuesReducers from "./listItemsFormValuesReducers";
+import listItemsCreateFormValuesReducers from "./listItemsCreateFormValuesReducers";
 
 export default combineReducers({
   auth,
@@ -15,6 +15,6 @@ export default combineReducers({
   listReducers,
   itemsReducers,
   listItemsReducers,
-  listItemsFormValuesReducers,
+  listItemsCreateFormValuesReducers,
   form: formReducer,
 });
