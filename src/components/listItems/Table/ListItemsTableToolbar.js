@@ -1,6 +1,5 @@
 import { lighten, makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import FilterListIcon from "@material-ui/icons/FilterList";
 import PropTypes from "prop-types";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -8,6 +7,10 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import clsx from "clsx";
+import FormControl from "@material-ui/core/FormControl";
+import Input from "@material-ui/core/Input";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import SearchIcon from "@material-ui/icons/Search";
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
@@ -27,11 +30,15 @@ const useToolbarStyles = makeStyles((theme) => ({
   title: {
     flex: "1 1 100%",
   },
+  margin: {
+    margin: theme.spacing(2),
+    width: "50%",
+  },
 }));
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected } = props;
+  const { numSelected, searchTerm, setSearchTerm } = props;
 
   return (
     <Toolbar
@@ -60,17 +67,25 @@ const EnhancedTableToolbar = (props) => {
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip title="Delete" onClick={props.handleDelete}>
           <IconButton aria-label="delete">
             <DeleteIcon />
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        <FormControl className={classes.margin}>
+          <Input
+            id="input-with-icon-adornment"
+            startAdornment={
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            }
+            placeholder="Search by item name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </FormControl>
       )}
     </Toolbar>
   );
@@ -78,6 +93,16 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
+  searchTerm: PropTypes.string,
+  setSearchTerm: PropTypes.func.isRequired,
 };
 
 export default EnhancedTableToolbar;
+
+{
+  /* <Tooltip title="Filter list">
+          <IconButton aria-label="filter list">
+            <FilterListIcon />
+          </IconButton>
+        </Tooltip> */
+}

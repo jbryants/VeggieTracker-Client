@@ -8,12 +8,11 @@ import TableRow from "@material-ui/core/TableRow";
 import Checkbox from "@material-ui/core/Checkbox";
 import InputBase from "@material-ui/core/InputBase";
 import {
-  descendingComparator,
   getComparator,
   stableSort,
-} from "./sortingHelper";
-import EnhancedTableToolbar from "./ListItemsTableToolbar";
+} from "../../../containers/listItems/Table/sortingHelper";
 import EnhancedTableHead from "./ListItemsTableHead";
+import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles((theme) => ({
   visuallyHidden: {
@@ -33,6 +32,14 @@ const useStyles = makeStyles((theme) => ({
   totalCell: {
     fontWeight: "bold",
     //fontSize: "medium",
+  },
+  underline: {
+    "&&&:before": {
+      borderBottom: "none",
+    },
+    "&&:after": {
+      borderBottom: "none",
+    },
   },
 }));
 
@@ -77,6 +84,12 @@ const ListItemsTableContent = (props) => {
               const isItemSelected = isSelected(row);
               const labelId = `enhanced-table-checkbox-${index}`;
 
+              {
+                /* if ([146, 149].includes(row.id)) {
+                return null;
+              } */
+              }
+
               return (
                 <TableRow
                   hover
@@ -101,39 +114,35 @@ const ListItemsTableContent = (props) => {
                     scope="row"
                     padding="none"
                   >
-                    {/* <InputBase
-                      //defaultValue={row.name}
-                      //onChange={(e) => handleChange(e, row.id, "name")}
-                      inputProps={{ "aria-label": "naked" }}
-                    /> */}
                     {row.name}
                   </TableCell>
-                  {/* // event.value can be sent in the form of { name: event.value }
-                      // with id for update onBlur event.
-                      // same funda is applicable for remaining, remove option for editing name later. */}
                   <TableCell align="right">
-                    <InputBase
-                      //defaultValue={row.base_quantity}
-                      value={row.total_quantity}
-                      name="base_quantity"
+                    <Select
+                      native
+                      value={
+                        row.base_quantity === 1.0 ? "1.0" : row.base_quantity
+                      }
                       onChange={(e) => handleChange(e, row.id)}
                       inputProps={{
-                        "aria-label": "naked",
+                        name: "base_quantity",
                         style: { textAlign: "right" },
                       }}
+                      className={classes.underline}
                       type="number"
-                    />
+                    >
+                      <option value={"0.25"}>Quarter</option>
+                      <option value={"1.0"}>Whole</option>
+                    </Select>
                   </TableCell>
                   <TableCell align="right">
                     <InputBase
-                      //defaultValue={row.base_price}
                       value={row.base_price ? parseFloat(row.base_price) : ""}
                       name="base_price"
                       onChange={(e) => handleChange(e, row.id)}
                       inputProps={{
                         min: "0",
                         max: "99999",
-                        step: "0.25",
+                        step: "1.00",
                         precision: "2",
                         "aria-label": "naked",
                         style: { textAlign: "right" },
@@ -143,26 +152,34 @@ const ListItemsTableContent = (props) => {
                   </TableCell>
                   <TableCell align="right">
                     <InputBase
-                      //defaultValue={row.total_quantity}
                       value={row.total_quantity}
                       name="total_quantity"
                       onChange={(e) => handleChange(e, row.id)}
                       inputProps={{
+                        min: "0",
+                        max: "999",
+                        step: "0.250",
+                        precision: "3",
                         "aria-label": "naked",
                         style: { textAlign: "right" },
                       }}
+                      type="number"
                     />
                   </TableCell>
                   <TableCell align="right">
                     <InputBase
-                      //defaultValue={row.total_price}
                       value={row.total_price}
                       name="total_price"
                       onChange={(e) => handleChange(e, row.id)}
                       inputProps={{
+                        min: "0",
+                        max: "99899001",
+                        step: "1.00",
+                        precision: "2",
                         "aria-label": "naked",
                         style: { textAlign: "right" },
                       }}
+                      type="number"
                     />
                   </TableCell>
                   {/* <TableCell align="right">{row.calories}</TableCell>

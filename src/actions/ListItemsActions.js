@@ -6,6 +6,7 @@ import {
   UPDATE_LIST_ITEM,
   DELETE_LIST_ITEMS,
 } from "./types";
+import _ from "lodash";
 
 export const fetchListItems = (id) => async (dispatch) => {
   const response = await django.get(`/listitems/?list=${id}`);
@@ -24,28 +25,42 @@ export const updateListItemValue = (id, field, value) => {
   };
 };
 
-export const updateListItem = (id, field, value) => async (dispatch) => {
-  // if total_price was changed then update the base_price accordingly
-  // then send both of them together.
+const updateBasePriceHelper = (listItems, id) => {
+  const index = _.findIndex(listItems, ["id", id]);
+  const listItem = listItems[index];
+  const basePrice =
+    parseFloat(listItem.total_price) /
+    (parseFloat(listItem.total_quantity) / parseFloat(listItem.base_quantity));
+  return ["base_price", basePrice.toPrecision(2)];
+};
 
-  console.log("requesting...");
+export const updateListItem = (id, field, value) => async (
+  dispatch,
+  getState
+) => {
+  if (field === "total_price") {
+    // if total_price was changed then update the base_price
+    // and send that instead of total_price - as total_price updation is handled on server.
+    [field, value] = updateBasePriceHelper(getState().listItemsReducers, id);
+  }
   if (value !== "" && value <= 99999) {
     const response = await django.patch(`/listitems/${id}/`, {
       [field]: value,
     });
-    dispatch({
-      type: UPDATE_LIST_ITEM,
-      payload: response.data,
-    });
+    console.log(response);
+    if (response) {
+      dispatch({
+        type: UPDATE_LIST_ITEM,
+        payload: response.data,
+      });
+    }
   }
 };
 
 export const deleteListItems = (selected) => async (dispatch) => {
   let deleted = [];
   for (const item of selected) {
-    console.log(item);
     const response = await django.delete(`/listitems/${item.id}/`);
-    console.log(response);
     if (response.status === 204) {
       deleted.push(item);
     } else {

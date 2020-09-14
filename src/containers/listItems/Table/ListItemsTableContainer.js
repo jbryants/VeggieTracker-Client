@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import ListItemsTable from "./ListItemsTable";
+import ListItemsTable from "../../../components/listItems/Table/ListItemsTable";
 import { connect } from "react-redux";
 import {
   fetchItems,
@@ -10,6 +10,7 @@ import {
   deleteListItems,
 } from "../../../actions";
 import _ from "lodash";
+import { getComparator, stableSort } from "./sortingHelper";
 
 const EnhancedTable = (props) => {
   const [order, setOrder] = React.useState("asc");
@@ -18,6 +19,53 @@ const EnhancedTable = (props) => {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  const [filteredRows, setFilteredRows] = React.useState([]);
+  let rowsView = props.rows.filter((row) => {
+    if (!filteredRows.includes(row.id)) {
+      return row;
+    }
+  });
+
+  const updateFilteredRows = (items) => {
+    if (searchTerm === "") {
+      setFilteredRows([]);
+      return;
+    }
+
+    const filteredRowsSet = new Set();
+
+    items.forEach((item) => {
+      if (item.name.includes(searchTerm)) {
+        return;
+      }
+      filteredRowsSet.add(item.id);
+    });
+
+    setFilteredRows(Array.from(filteredRowsSet));
+  };
+
+  useEffect(() => {
+    // Debouncing till there is a pause.
+    const timerId = setTimeout(() => {
+      updateFilteredRows(props.rows);
+    }, 300);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [searchTerm]);
+
+  useEffect(() => {
+    rowsView = props.rows.filter((row) => {
+      if (!filteredRows.includes(row.id)) {
+        return row;
+      }
+    });
+    updateTotal(rowsView);
+  }, [filteredRows]);
 
   const debouncedFn = React.useCallback(
     _.debounce((id, name, val) => props.updateListItem(id, name, val), 900),
@@ -35,30 +83,56 @@ const EnhancedTable = (props) => {
   }, []);
 
   useEffect(() => {
-    //console.log("On data change.");
-    //props.filterItemsSet();
-    // might need this for something else in future.
+    // On rows data change
+    // Debouncing till there is a pause.
+    const timerId = setTimeout(() => {
+      updateTotal(rowsView);
+    }, 700);
+
+    return () => {
+      clearTimeout(timerId);
+    };
   }, [props.rows]);
 
   useEffect(() => {
     props.fetchItems();
     //if (props.rows.length > 0) {
     //console.log("Calculate total when rows count change.");
-    updateTotal(props.rows);
+    updateTotal(rowsView);
+    //    setRowsView(
+    // rowsView = props.rows.filter((row) => {
+    //   if (!filteredRows.includes(row.id)) {
+    //     return row;
+    //   }
+    // });
+    //    );
   }, [props.rows.length]);
 
   useEffect(() => {
     if (selected.length === 0 && props.rows.length > 0) {
       //console.log("Total calculation when nothing is selected.");
-      updateTotal(props.rows);
+      updateTotal(rowsView);
     } else if (selected.length > 0) {
       //console.log("recalculate total based on items selected.");
       updateTotal(selected);
     }
   }, [selected]);
 
+  useEffect(() => {
+    if (selected.length === 0) {
+      updateTotal(stableSort(props.rows, getComparator(order, orderBy)));
+    }
+  }, [page, rowsPerPage, order, orderBy]);
+
   const updateTotal = (items) => {
     console.log("Calculating total on the basis of: ", items);
+    if (selected.length === 0) {
+      // total on the basis of rows in current page
+      const start = page * rowsPerPage;
+      const end = start + rowsPerPage;
+      items = items.slice(start, end);
+    }
+
     let base_quantity = 0.0;
     let total_quantity = 0.0;
     let base_price = 0.0;
@@ -87,7 +161,7 @@ const EnhancedTable = (props) => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = props.rows;
+      const newSelecteds = rowsView;
       //.map((n) => n.id);
       setSelected(newSelecteds);
       return;
@@ -95,12 +169,12 @@ const EnhancedTable = (props) => {
     setSelected([]);
   };
 
-  const handleClick = (event, rowId) => {
-    const selectedIndex = selected.indexOf(rowId);
+  const handleClick = (event, row) => {
+    const selectedIndex = selected.indexOf(row);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, rowId);
+      newSelected = newSelected.concat(selected, row);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -115,6 +189,7 @@ const EnhancedTable = (props) => {
     setSelected(newSelected);
   };
 
+  // change name from handleChange to handleCellValueChange
   const handleChange = (e, id) => {
     /* signal to React not to nullify the event object */
     e.persist();
@@ -166,10 +241,12 @@ const EnhancedTable = (props) => {
       listId={props.listId}
       fetchListItems={props.fetchListItems}
       filterItemsSet={props.filterItemsSet}
-      rows={props.rows}
+      rows={rowsView}
       updateListItems={props.updateListItems}
       handleDelete={handleDelete}
       total={total}
+      searchTerm={searchTerm}
+      setSearchTerm={setSearchTerm}
     />
   );
 };

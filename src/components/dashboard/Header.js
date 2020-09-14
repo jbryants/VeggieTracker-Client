@@ -1,9 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { handleDrawer } from "../../actions";
+import { Link as ReactRouterLink } from "react-router-dom";
 
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
+import Link from "@material-ui/core/Link";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -60,7 +62,7 @@ const Header = (props) => {
         className={clsx(classes.appBar, props.open && classes.appBarShift)}
       >
         <Toolbar className={classes.toolbar}>
-          <IconButton
+          {/* <IconButton
             edge="start"
             color="inherit"
             aria-label="open drawer"
@@ -71,7 +73,7 @@ const Header = (props) => {
             )}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
           <Typography
             component="h1"
             variant="h6"
@@ -79,12 +81,21 @@ const Header = (props) => {
             noWrap
             className={classes.title}
           >
-            <Box fontWeight="fontWeightMedium">VeggieTracker</Box>
+            <Box fontWeight="fontWeightMedium">
+              <Link
+                to="/lists"
+                color="inherit"
+                underline="none"
+                component={ReactRouterLink}
+              >
+                VeggieTracker
+              </Link>
+            </Box>
           </Typography>
           <HeaderProfileMenu />
         </Toolbar>
       </AppBar>
-      <LeftSideDrawer />
+      {/* <LeftSideDrawer /> */}
     </div>
   );
 };

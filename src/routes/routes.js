@@ -7,16 +7,6 @@ import ListCreateFab from "../components/lists/ListCreateFab";
 import ListDelete from "../components/lists/ListDelete";
 import ListEdit from "../containers/lists/ListEdit";
 import ListList from "../components/lists/ListList";
-// import TableCombinedMaterialUI from "../components/table/TableCombinedMaterialUI";
-// import TableEditable from "../components/table/TableEditable";
-// import TableFiltering from "../components/table/TableFiltering";
-// import TableFooter from "../components/table/TableFooter";
-// import TableMaterialUI from "../components/table/TableMaterialUI";
-// import TablePagination from "../components/table/TablePagination";
-// import TableSelectable from "../components/table/TableSelectable";
-// import TableSimple from "../components/table/TableSimple";
-// import TableSorting from "../components/table/TableSorting";
-// import TableCombined from "../components/tableCombined/TableCombined";
 import { RouteWithSubRoutes } from "../routes";
 
 function Analytics({ routes }) {
@@ -127,48 +117,4 @@ export const routes = [
       },
     ],
   },
-  // {
-  //   path: "/muit",
-  //   component: ListItemTable,
-  // },
-  // {
-  //   path: "/table",
-  //   component: TableSimple,
-  // },
-  // {
-  //   path: "/tableFooter",
-  //   component: TableFooter,
-  // },
-  // {
-  //   path: "/tableSorting",
-  //   component: TableSorting,
-  // },
-  // {
-  //   path: "/tableFiltering",
-  //   component: TableFiltering,
-  // },
-  // {
-  //   path: "/tablePagination",
-  //   component: TablePagination,
-  // },
-  // {
-  //   path: "/tableSelectable",
-  //   component: TableSelectable,
-  // },
-  // {
-  //   path: "/tableEditable",
-  //   component: TableEditable,
-  // },
-  // {
-  //   path: "/tableMUI",
-  //   component: TableMaterialUI,
-  // },
-  // {
-  //   path: "/tableCombined",
-  //   component: TableCombined,
-  // },
-  // {
-  //   path: "/tableCombinedMUI",
-  //   component: TableCombinedMaterialUI,
-  // },
 ];
