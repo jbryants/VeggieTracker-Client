@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Switch } from "react-router-dom";
-import SignIn from "../components/auth/SignIn";
-import SignUp from "../components/auth/SignUp";
+import SignIn from "../components/auth/Signin";
+import SignUp from "../components/auth/Signup";
 import Dashboard from "../components/dashboard/Dashboard";
 import ListCreateFab from "../components/lists/ListCreateFab";
 import ListDelete from "../components/lists/ListDelete";

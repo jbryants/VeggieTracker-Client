@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import SignIn from "../components/auth/SignIn";
+import SignIn from "../components/auth/Signin";
 import { routes } from "./routes";
 
 // A special wrapper for <Route> that knows how to
