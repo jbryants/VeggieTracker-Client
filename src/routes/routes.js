@@ -66,23 +66,23 @@ export const routes = [
     component: SignUp,
   },
   {
-    path: "/",
+    path: "/home",
     component: Dashboard,
     routes: [
       {
-        path: "/lists/edit/:id",
+        path: "/home/lists/edit/:id",
         component: ListEdit,
       },
       {
-        path: "/lists",
+        path: "/home/lists",
         component: ListList,
         routes: [
           {
-            path: "/lists/new",
+            path: "/home/lists/new",
             component: ListCreateFab,
           },
           {
-            path: "/lists/delete/:id",
+            path: "/home/lists/delete/:id",
             component: ListDelete,
           },
         ],

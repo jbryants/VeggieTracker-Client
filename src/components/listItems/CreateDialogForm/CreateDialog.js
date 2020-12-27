@@ -38,13 +38,14 @@ const CreateDialog = (props) => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">
-          <Box display="flex" justifyContent="center">
+          {/* Change this after adding veggie image content */}
+          {/* <Box display="flex" justifyContent="center">
             <Avatar
               alt={item ? item.name : "Item name"}
               src={item ? item.image_small : null}
               className={classes.large}
             />
-          </Box>
+          </Box> */}
           {veggies[random]} {item ? item.name : "Item name"} {veggies[random]}
         </DialogTitle>
 

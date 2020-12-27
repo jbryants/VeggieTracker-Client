@@ -16,13 +16,14 @@ export default (state = INITIAL_STATE, action) => {
       // changing the existing item values to the
       // values submitted in list item creation form
       return state.map((value) => {
-        if (value.item === action.payload.item) {
+        //if (value.item === action.payload.item) {
+        if (value.itemId === action.payload.itemId) {
           return action.payload;
         }
         return value;
       });
     case DELETE_LIST_ITEMS_FORM_VALUE:
-      return _.intersectionBy(state, action.payload, "item");
+      return _.intersectionBy(state, action.payload, "itemId");
     case RESET_LIST_ITEMS_FORM_VALUES:
       return action.payload;
     default:

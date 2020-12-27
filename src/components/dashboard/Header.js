@@ -83,7 +83,7 @@ const Header = (props) => {
           >
             <Box fontWeight="fontWeightMedium">
               <Link
-                to="/lists"
+                to="/home/lists"
                 color="inherit"
                 underline="none"
                 component={ReactRouterLink}

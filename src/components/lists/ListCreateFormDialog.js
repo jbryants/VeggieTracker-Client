@@ -51,7 +51,7 @@ const ListCreateFormDialog = (props) => {
   const handleClose = () => {
     props.handleListCreateFormDialog(false);
     reset();
-    history.push("/lists");
+    history.push("/home/lists");
   };
 
   const onSubmit = (formProps) => {

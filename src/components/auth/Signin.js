@@ -91,7 +91,7 @@ const renderTextField = ({
 );
 
 const SignIn = (props) => {
-  const { handleSubmit, error } = props;
+  const { handleSubmit, error, isEmailVerified } = props;
   const classes = useStyles();
 
   const onSubmit = (formProps) => {
@@ -115,6 +115,7 @@ const SignIn = (props) => {
             onSubmit={handleSubmit(onSubmit)}
             noValidate
           >
+	    {isEmailVerified === false && <Alert severity="warning">{'Please verify your email address before signing in.'}</Alert>}
             {error && <Alert severity="error">{error}</Alert>}
             <Field
               id="email"
@@ -160,8 +161,12 @@ const SignIn = (props) => {
   );
 };
 
+function mapStateToProps(state) {
+  return { isEmailVerified: state.auth.isEmailVerified };
+}
+
 // Compose helps us to apply multiple higher order components to a single component
 export default compose(
-  connect(null, { signin }),
+  connect(mapStateToProps, { signin }),
   reduxForm({ form: "signin", validate })
 )(SignIn);

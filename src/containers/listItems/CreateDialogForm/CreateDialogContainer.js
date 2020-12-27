@@ -36,22 +36,22 @@ function CreateDialogContainer(props) {
     open,
   } = props;
   const [formState, setFormState] = useState({
-    list: listId ? listId : null,
-    item: null,
-    base_unit: "kg",
+    listId: listId ? listId : null,
+    itemId: null,
+    baseUnit: "kg",
     unit: "kg",
-    base_quantity: "0.25",
-    base_price: "0",
-    total_quantity: "0",
+    baseQuantity: "0.25",
+    basePrice: "0",
+    totalQuantity: "0",
   });
   const [totalPrice, setTotalPrice] = useState("0");
 
   const getTotalQuantityInKilos = () => {
     let totalQuantity = 0;
     if (formState.unit === "gram") {
-      totalQuantity = parseFloat(formState.total_quantity) / 1000;
+      totalQuantity = parseFloat(formState.totalQuantity) / 1000;
     } else {
-      totalQuantity = parseFloat(formState.total_quantity);
+      totalQuantity = parseFloat(formState.totalQuantity);
     }
 
     return totalQuantity;
@@ -61,44 +61,44 @@ function CreateDialogContainer(props) {
     const totalQuantity = getTotalQuantityInKilos();
 
     setTotalPrice(
-      (totalQuantity / parseFloat(formState.base_quantity)) *
-        parseFloat(formState.base_price)
+      (totalQuantity / parseFloat(formState.baseQuantity)) *
+        parseFloat(formState.basePrice)
     );
   };
 
   useEffect(() => {
-    if (formState.base_unit === "dozen" || formState.unit === "dozen") {
+    if (formState.baseUnit === "dozen" || formState.unit === "dozen") {
       setFormState({
         ...formState,
-        unit: formState.base_unit,
+        unit: formState.baseUnit,
       });
     }
-  }, [formState.base_unit]);
+  }, [formState.baseUnit]);
 
   useEffect(() => {
     // while base_quantity changes, we need to update base_price
     setFormState({
       ...formState,
-      base_price:
-        formState.base_quantity === "0.25"
-          ? formState.base_price / 4
-          : formState.base_price * 4,
+      basePrice:
+        formState.baseQuantity === "0.25"
+          ? formState.basePrice / 4
+          : formState.basePrice * 4,
     });
-  }, [formState.base_quantity]);
+  }, [formState.baseQuantity]);
 
   useEffect(() => {
     // while base_price changes, we need to update total_price
     updateTotalPrice();
-  }, [formState.base_price]);
+  }, [formState.basePrice]);
 
   useEffect(() => {
     setFormState({
       ...formState,
-      total_quantity:
+      totalQuantity:
         formState.unit === "kg"
-          ? formState.total_quantity / 1000
+          ? formState.totalQuantity / 1000
           : formState.unit === "gram"
-          ? formState.total_quantity * 1000
+          ? formState.totalQuantity * 1000
           : "0",
     });
   }, [formState.unit]);
@@ -106,7 +106,7 @@ function CreateDialogContainer(props) {
   useEffect(() => {
     // while total_quantity changes, we need to update total_price
     updateTotalPrice();
-  }, [formState.total_quantity]);
+  }, [formState.totalQuantity]);
 
   const handleTotalPriceChange = (event) => {
     setTotalPrice(event.target.value);
@@ -115,9 +115,9 @@ function CreateDialogContainer(props) {
 
     setFormState({
       ...formState,
-      base_price:
+      basePrice:
         parseFloat(event.target.value) /
-        (totalQuantity / parseFloat(formState.base_quantity)),
+        (totalQuantity / parseFloat(formState.baseQuantity)),
     });
   };
 
@@ -126,13 +126,13 @@ function CreateDialogContainer(props) {
     // so can get rid of this hopefully.
     setFormState({
       ...formState,
-      list: listId ? listId : null,
-      item: item ? item.item : null,
-      base_unit: item ? item.base_unit : "kg",
-      base_quantity: item ? `${item.base_quantity}` : "0.25",
-      base_price: item ? `${item.base_price}` : "0",
+      listId: listId ? listId : null,
+      itemId: item ? item.itemId : null,
+      baseUnit: item ? item.baseUnit : "kg",
+      baseQuantity: item ? `${item.baseQuantity}` : "0.25",
+      basePrice: item ? `${item.basePrice}` : "0",
       unit: item ? item.unit : "kg",
-      total_quantity: item ? `${item.total_quantity}` : "0",
+      totalQuantity: item ? `${item.totalQuantity}` : "0",
     });
 
     return () => {
@@ -140,9 +140,9 @@ function CreateDialogContainer(props) {
       setFormState({
         ...formState,
         unit: "kg",
-        base_quantity: "0",
-        base_price: "0",
-        total_quantity: "0",
+        baseQuantity: "0",
+        basePrice: "0",
+        totalQuantity: "0",
       });
       setTotalPrice("0");
     };
@@ -161,8 +161,8 @@ function CreateDialogContainer(props) {
       submitListItemCreateFormValues({
         ...formState,
         unit: "kg",
-        base_unit: "kg",
-        total_quantity: parseInt(formState.total_quantity) / 1000,
+        baseUnit: "kg",
+        totalQuantity: parseInt(formState.totalQuantity) / 1000,
       });
     } else {
       submitListItemCreateFormValues(formState);

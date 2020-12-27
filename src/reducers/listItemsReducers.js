@@ -4,6 +4,7 @@ import {
   UPDATE_LIST_ITEM_VALUE,
   UPDATE_LIST_ITEM,
   DELETE_LIST_ITEMS,
+  RESET_LIST_ITEMS,
 } from "../actions/types";
 import _ from "lodash";
 
@@ -31,6 +32,8 @@ export default (state = INITIAL_STATE, action) => {
       });
     case DELETE_LIST_ITEMS:
       return _.differenceBy(state, action.payload, "id");
+    case RESET_LIST_ITEMS:
+      return action.payload;
     default:
       return state;
   }

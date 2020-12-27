@@ -120,11 +120,11 @@ const ListItemsTableContent = (props) => {
                     <Select
                       native
                       value={
-                        row.base_quantity === 1.0 ? "1.0" : row.base_quantity
+                        row.baseQuantity === 1.0 ? "1.0" : row.baseQuantity
                       }
                       onChange={(e) => handleChange(e, row.id)}
                       inputProps={{
-                        name: "base_quantity",
+                        name: "baseQuantity",
                         style: { textAlign: "right" },
                       }}
                       className={classes.underline}
@@ -136,8 +136,8 @@ const ListItemsTableContent = (props) => {
                   </TableCell>
                   <TableCell align="right">
                     <InputBase
-                      value={row.base_price ? parseFloat(row.base_price) : ""}
-                      name="base_price"
+                      value={row.basePrice ? parseFloat(row.basePrice) : "0.0"}
+                      name="basePrice"
                       onChange={(e) => handleChange(e, row.id)}
                       inputProps={{
                         min: "0",
@@ -152,8 +152,8 @@ const ListItemsTableContent = (props) => {
                   </TableCell>
                   <TableCell align="right">
                     <InputBase
-                      value={row.total_quantity}
-                      name="total_quantity"
+                      value={row.totalQuantity}
+                      name="totalQuantity"
                       onChange={(e) => handleChange(e, row.id)}
                       inputProps={{
                         min: "0",
@@ -168,8 +168,8 @@ const ListItemsTableContent = (props) => {
                   </TableCell>
                   <TableCell align="right">
                     <InputBase
-                      value={row.total_price}
-                      name="total_price"
+                      value={row.totalPrice}
+                      name="totalPrice"
                       onChange={(e) => handleChange(e, row.id)}
                       inputProps={{
                         min: "0",
@@ -198,16 +198,16 @@ const ListItemsTableContent = (props) => {
               Total
             </TableCell>
             <TableCell className={classes.totalCell} align="right">
-              {total.base_quantity}
+              {total.baseQuantity !== null && total.baseQuantity}
             </TableCell>
             <TableCell className={classes.totalCell} align="right">
-              {total.base_price}
+              {total.basePrice}
             </TableCell>
             <TableCell className={classes.totalCell} align="right">
-              {total.total_quantity}
+              {total.totalQuantity}
             </TableCell>
             <TableCell className={classes.totalCell} align="right">
-              {total.total_price}
+              {total.totalPrice}
             </TableCell>
           </TableRow>
         </TableBody>

@@ -1,4 +1,4 @@
-import { CREATE_LIST, FETCH_LISTS, DELETE_LIST } from "../actions/types";
+import { CREATE_LIST, FETCH_LISTS, DELETE_LIST, RESET_LISTS } from "../actions/types";
 import _ from "lodash";
 
 const INITIAL_STATE = {};
@@ -13,6 +13,9 @@ export default function (state = INITIAL_STATE, action) {
 
     case DELETE_LIST:
       return _.omit(state, action.payload);
+
+    case RESET_LISTS:
+      return action.payload;
 
     default:
       return state;

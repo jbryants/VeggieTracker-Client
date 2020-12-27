@@ -127,7 +127,7 @@ const ListDetail = (props) => {
                 size="small"
                 className={classes.button}
                 endIcon={<EditIcon />}
-                to={`/lists/edit/${props.id}`}
+                to={`/home/lists/edit/${props.id}`}
                 component={Link}
               >
                 Edit

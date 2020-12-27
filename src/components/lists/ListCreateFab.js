@@ -38,13 +38,13 @@ const ListCreateFab = (props) => {
   const { handleListCreateFormDialog } = props;
 
   useEffect(() => {
-    if (window.location.pathname === "/lists/new") {
+    if (window.location.pathname === "/home/lists/new") {
       handleListCreateFormDialog(true);
     }
 
     window.onpopstate = () => {
       // on back button click on browser
-      if (document.location.pathname === "/lists") {
+      if (document.location.pathname === "/home/lists") {
         handleListCreateFormDialog(false);
       }
     };
@@ -52,7 +52,7 @@ const ListCreateFab = (props) => {
 
   const handleClickOpen = () => {
     handleListCreateFormDialog(true);
-    history.push("/lists/new");
+    history.push("/home/lists/new");
   };
 
   return (

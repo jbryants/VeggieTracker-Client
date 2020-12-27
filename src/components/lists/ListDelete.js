@@ -15,7 +15,7 @@ const ListDelete = (props) => {
 
   useEffect(() => {
     const callback = () => {
-      if (document.location.pathname === "/lists") {
+      if (document.location.pathname === "/home/lists") {
         setOpen(false);
       }
     };
@@ -27,19 +27,19 @@ const ListDelete = (props) => {
   }, []);
 
   useEffect(() => {
-    if (window.location.pathname === `/lists/delete/${props.listId}`) {
+    if (window.location.pathname === `/home/lists/delete/${props.listId}`) {
       setOpen(true);
     }
   }, [props.listId]);
 
   const handleClickOpen = () => {
     setOpen(true);
-    history.push(`/lists/delete/${props.listId}`);
+    history.push(`/home/lists/delete/${props.listId}`);
   };
 
   const handleClose = () => {
     setOpen(false);
-    history.push("/lists");
+    history.push("/home/lists");
   };
 
   const handleDelete = () => {

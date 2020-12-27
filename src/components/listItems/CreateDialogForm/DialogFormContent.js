@@ -14,10 +14,10 @@ const DialogFormContent = (props) => {
         requested below.
       </DialogContentText>
       <SelectFormControl
-        name="base_unit"
-        id="base_unit"
+        name="baseUnit"
+        id="baseUnit"
         inputLabel={"Base Units"}
-        value={formState.base_unit}
+        value={formState.baseUnit}
         handleChange={handleChange}
         options={[
           ["gram", "Gram"],
@@ -29,31 +29,33 @@ const DialogFormContent = (props) => {
       />
       {formState.base_unit !== "dozen" && (
         <SelectFormControl
-          name="base_quantity"
-          id="base_quantity"
+          name="baseQuantity"
+          id="baseQuantity"
           inputLabel={`Base Quantity${
-            formState.base_unit !== "" ? ` in ${formState.base_unit}` : ""
+            formState.baseUnit !== "" ? ` in ${formState.baseUnit}` : ""
           }`}
-          value={formState.base_quantity}
+          value={formState.baseQuantity}
           handleChange={handleChange}
           options={[
             ["0.25", "Quarter"],
             ["1.0", "Whole"],
+            // ["QUARTER", "Quarter"],
+            // ["WHOLE", "Whole"],
           ]}
           formHelperText={null}
         />
       )}
       <TextField
-        name="base_price"
+        name="basePrice"
         margin="dense"
-        id="base_price"
+        id="basePrice"
         label="Base Price"
         type="number"
         onChange={handleChange}
-        value={formState.base_price}
+        value={formState.basePrice}
         fullWidth
       />
-      {formState.base_unit !== "dozen" && (
+      {formState.baseUnit !== "dozen" && (
         <SelectFormControl
           name="unit"
           id="unit"
@@ -68,15 +70,15 @@ const DialogFormContent = (props) => {
         />
       )}
       <TextField
-        name="total_quantity"
+        name="totalQuantity"
         margin="dense"
-        id="total_quantity"
+        id="totalQuantity"
         label={`Total Quantity${
           formState.unit !== "" ? ` in ${formState.unit}` : ""
         }`}
         type="number"
         onChange={handleChange}
-        value={formState.total_quantity}
+        value={formState.totalQuantity}
         fullWidth
       />
       <TextField

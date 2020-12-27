@@ -72,10 +72,10 @@ const EnhancedTable = (props) => {
     []
   );
   const [total, setTotal] = React.useState({
-    base_quantity: 0.0,
-    total_quantity: 0.0,
-    base_price: 0.0,
-    total_price: 0.0,
+    baseQuantity: 0.0,
+    totalQuantity: 0.0,
+    basePrice: 0.0,
+    totalPrice: 0.0,
   });
 
   useEffect(() => {
@@ -133,23 +133,23 @@ const EnhancedTable = (props) => {
       items = items.slice(start, end);
     }
 
-    let base_quantity = 0.0;
-    let total_quantity = 0.0;
-    let base_price = 0.0;
-    let total_price = 0.0;
+    let baseQuantity = 0.0;
+    let totalQuantity = 0.0;
+    let basePrice = 0.0;
+    let totalPrice = 0.0;
 
     for (const item of items) {
-      base_quantity += parseFloat(item.base_quantity);
-      total_quantity += parseFloat(item.total_quantity);
-      base_price += parseFloat(item.base_price);
-      total_price += parseFloat(item.total_price);
+      baseQuantity += parseFloat(item.baseQuantity);
+      totalQuantity += parseFloat(item.totalQuantity);
+      basePrice += parseFloat(item.basePrice);
+      totalPrice += parseFloat(item.totalPrice);
     }
 
     setTotal({
-      base_quantity,
-      total_quantity,
-      base_price,
-      total_price,
+      baseQuantity,
+      totalQuantity,
+      basePrice,
+      totalPrice,
     });
   };
 
