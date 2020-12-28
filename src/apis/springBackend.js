@@ -2,7 +2,7 @@ import axios from "axios";
 
 const fetchClient = () => {
   let spring = axios.create({
-    baseURL: "http://localhost:8080/api/v1",
+    baseURL: "http://veggietracker-env.eba-jpegpwk2.ap-south-1.elasticbeanstalk.com/api/v1",
   });
 
   // Set the AUTH token for any request

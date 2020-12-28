@@ -27,8 +27,8 @@ const CreateDialog = (props) => {
     handleSubmit,
   } = props;
 
-  const veggies = ["🍅", "🧅", "🍌", "🥔"];
-  const random = Math.floor(Math.random() * veggies.length);
+  // const veggies = ["🍅", "🧅", "🍌", "🥔"];
+  // const random = Math.floor(Math.random() * veggies.length);
 
   return (
     <div>
@@ -39,14 +39,14 @@ const CreateDialog = (props) => {
       >
         <DialogTitle id="form-dialog-title">
           {/* Change this after adding veggie image content */}
-          {/* <Box display="flex" justifyContent="center">
+          <Box display="flex" justifyContent="center">
             <Avatar
               alt={item ? item.name : "Item name"}
-              src={item ? item.image_small : null}
+              src={item ? item.image : null}
               className={classes.large}
             />
-          </Box> */}
-          {veggies[random]} {item ? item.name : "Item name"} {veggies[random]}
+          </Box>
+          {item ? item.name : "Item name"}
         </DialogTitle>
 
         <DialogFormContent
